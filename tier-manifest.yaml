@@ -1,0 +1,41 @@
+# ~/9arm-skills/tier-manifest.yaml
+# Tier 0 = always load | Tier 1 = engineering | Tier 2 = AI/agent | Tier 3 = optional
+
+tier_0:                                        # ~3,500t total
+  - engineering/systematic-debugging           # 4-phase debug + verify
+  - productivity/git-workflow                  # conventional commits
+  - productivity/grill-me                      # greenfield planning
+  - productivity/grill-with-docs               # established project + CONTEXT.md
+
+tier_1_engineering:                            # +~9,500t
+  - engineering/tdd                            # RED-GREEN-REFACTOR strict
+  - engineering/code-review
+  - engineering/error-handling
+  - engineering/verification-before-completion # verify fix ⭐
+  - productivity/writing-plans                 # 2-5 min tasks ⭐
+  - productivity/executing-plans
+  - productivity/strategic-compact
+  - productivity/verification-loop
+
+tier_2_ai_agent:                               # +~7,000t
+  - ai-agent/subagent-driven-development       # dispatch subagent ⭐⭐
+  - ai-agent/dispatching-parallel-agents       # concurrent agents ⭐⭐
+  - ai-agent/prompt-engineer
+  - ai-agent/agentic-eval
+  - ai-agent/continuous-learning
+  - engineering/security-review
+
+tier_3_optional:                               # on-demand only
+  - engineering/search-first
+  - engineering/receiving-code-review
+  - productivity/using-git-worktrees
+  - productivity/finishing-a-development-branch
+  - productivity/improve-codebase-architecture
+  - productivity/write-a-prd
+
+meta:
+  - meta/writing-skills
+
+personal:                                      # explicit load only
+  - personal/document-skill
+  - personal/andaman-context
