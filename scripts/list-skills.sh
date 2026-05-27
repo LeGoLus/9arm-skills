@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# list-skills.sh — list all skills with description from frontmatter
+set -euo pipefail
+
+# List all skills with description and tier from frontmatter
 
 SKILLS_ROOT=~/9arm-skills/skills
 echo "=== 9arm-skills Library ==="
 echo ""
 
-find "$SKILLS_ROOT" -name "SKILL.md" | sort | while read f; do
+find "$SKILLS_ROOT" -name "SKILL.md" | sort | while read -r f; do
   rel="${f#$SKILLS_ROOT/}"
   name="${rel%/SKILL.md}"
-  # Extract description from frontmatter
   desc=$(grep -m1 "^description:" "$f" 2>/dev/null | sed 's/^description: *//' | sed "s/^'//" | sed "s/'$//" | sed 's/^"//' | sed 's/"$//' || echo "—")
   tier=$(grep -m1 "^tier:" "$f" 2>/dev/null | sed 's/^tier: *//' || echo "?")
-  printf "  %-48s  tier:%-2s  %s\n" "$name" "$tier" "$desc"
+  printf "  %-50s  tier:%-8s  %s\n" "$name" "$tier" "$desc"
 done
 
 echo ""

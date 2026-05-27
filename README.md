@@ -1,7 +1,21 @@
 # 9arm-skills
 
 > LeGoLus skill library for Claude Code — Mac Mini M4 Pro
-> 24 skills across 4 tiers, 4 surfaces
+> 24+ skills across 4 tiers, 4 surfaces
+
+## Layout
+
+Skills live under `skills/`, grouped into buckets:
+
+- `engineering/` — daily code work
+- `productivity/` — daily non-code workflow tools
+- `ai-agent/` — AI/LLM/agent skills
+- `meta/` — writing and documentation skills
+- `personal/` — tied to my own setup, not promoted
+- `in-progress/` — drafts not yet ready to ship
+- `deprecated/` — no longer used
+
+Each skill is its own directory with a `SKILL.md` (YAML frontmatter: `name`, `description`, `tier`, `estimated_tokens`) and any bundled scripts or reference files.
 
 ## Structure
 
@@ -12,8 +26,8 @@
 │   ├── engineering/               ← tdd, code-review, debugging, security
 │   ├── productivity/              ← planning, git, writing, execution
 │   ├── ai-agent/                  ← subagents, dispatching, evals
-│   ├── personal/                  ← document-skill, andaman-context
-│   └── meta/                      ← writing-skills
+│   ├── meta/                      ← writing-skills
+│   └── personal/                  ← andaman-context, document-skill
 ├── scripts/
 │   ├── init-project.sh            ← scaffold CLAUDE.md per project
 │   ├── migrate-existing.sh        ← copy from ~/.claude/skills/
@@ -22,32 +36,29 @@
 │   ├── list-skills.sh             ← list all skills
 │   ├── token-audit.sh             ← token cost per skill
 │   └── validate.sh                ← post-setup verification
-├── tier-manifest.yaml             ← tier assignments
+├── tier-manifest.yaml
 └── README.md
-
 ```
 
-## Quick Start
+## Install
+
+Symlink every shippable skill into `~/.claude/skills/`:
 
 ```bash
-# New project
-~/9arm-skills/scripts/init-project.sh ~/myproject engineering
+bash ./scripts/link-skills.sh
+```
 
-# List all skills
-~/9arm-skills/scripts/list-skills.sh
+New project scaffold:
 
-# Token audit
-~/9arm-skills/scripts/token-audit.sh
-
-# Validate setup
-~/9arm-skills/scripts/validate.sh
+```bash
+bash ~/9arm-skills/scripts/init-project.sh ~/myproject engineering
 ```
 
 ## Tier System
 
 | Tier | When | Token budget |
 |------|------|-------------|
-| 0 | Always | ~3,500t |
+| 0 | Always | ~4,923t |
 | 1 Engineering | Most projects | +~9,500t |
 | 2 AI/Agent | AI features | +~7,000t |
 | 3 Optional | On demand | varies |
@@ -68,10 +79,56 @@
 git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main --squash
 ```
 
+---
+
+## Reference
+
+### Engineering
+
+- **[systematic-debugging](./skills/engineering/systematic-debugging/SKILL.md)** — 4-phase debugging: reproduce → trace → falsify → verify. Always applied before any fix.
+- **[debug-mantra](./skills/engineering/debug-mantra/SKILL.md)** — Four-mantra debugging discipline (legacy; superseded by systematic-debugging from superpowers).
+- **[post-mortem](./skills/engineering/post-mortem/SKILL.md)** — Write the canonical engineering record of a fixed bug — root cause, mechanism, fix, validation.
+- **[scrutinize](./skills/engineering/scrutinize/SKILL.md)** — Outsider-perspective review of a plan, PR, or code change. Questions intent, traces code path, verifies claims.
+- **[tdd](./skills/engineering/tdd/SKILL.md)** — RED-GREEN-REFACTOR. Failing test before any code. Delete code written before test.
+- **[code-review](./skills/engineering/code-review/SKILL.md)** — Pre-merge checklist: security, performance, naming, dead code, test coverage.
+- **[error-handling](./skills/engineering/error-handling/SKILL.md)** — Structured error handling patterns.
+- **[security-review](./skills/engineering/security-review/SKILL.md)** — Security-focused code review.
+- **[search-first](./skills/engineering/search-first/SKILL.md)** — Search before implementing.
+- **[verification-before-completion](./skills/engineering/verification-before-completion/SKILL.md)** — Verify fix works before marking done.
+- **[receiving-code-review](./skills/engineering/receiving-code-review/SKILL.md)** — How to receive and act on code review feedback.
+
+### Productivity
+
+- **[git-workflow](./skills/productivity/git-workflow/SKILL.md)** — Conventional commits, atomic changes, meaningful PR descriptions.
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Deep interview for greenfield planning.
+- **[grill-with-docs](./skills/productivity/grill-with-docs/SKILL.md)** — Planning session against existing codebase; updates CONTEXT.md + ADRs.
+- **[write-a-prd](./skills/productivity/write-a-prd/SKILL.md)** — Product Requirements Document creation.
+- **[writing-plans](./skills/productivity/writing-plans/SKILL.md)** — Break work into 2-5 minute tasks with exact file paths.
+- **[executing-plans](./skills/productivity/executing-plans/SKILL.md)** — Execute a written plan step by step.
+- **[strategic-compact](./skills/productivity/strategic-compact/SKILL.md)** — Long session summarization and context preservation.
+- **[verification-loop](./skills/productivity/verification-loop/SKILL.md)** — Build → test → lint → typecheck loop until all pass.
+- **[improve-codebase-architecture](./skills/productivity/improve-codebase-architecture/SKILL.md)** — Systematic architecture improvement.
+- **[using-git-worktrees](./skills/productivity/using-git-worktrees/SKILL.md)** — Parallel branches via git worktrees.
+- **[finishing-a-development-branch](./skills/productivity/finishing-a-development-branch/SKILL.md)** — Checklist for completing a feature branch.
+- **[management-talk](./skills/productivity/management-talk/SKILL.md)** — Rewrite engineer-to-engineer content for leadership channels.
+
+### AI-Agent
+
+- **[subagent-driven-development](./skills/ai-agent/subagent-driven-development/SKILL.md)** — Dispatch fresh subagents per task for spec compliance then code quality.
+- **[dispatching-parallel-agents](./skills/ai-agent/dispatching-parallel-agents/SKILL.md)** — Run independent tasks concurrently via parallel agents.
+- **[prompt-engineer](./skills/ai-agent/prompt-engineer/SKILL.md)** — Craft and optimize prompts.
+- **[agentic-eval](./skills/ai-agent/agentic-eval/SKILL.md)** — Evaluate agentic AI systems.
+
+### Meta
+
+- **[writing-skills](./skills/meta/writing-skills/SKILL.md)** — Meta-skill for creating and maintaining skill documentation.
+
+---
+
 ## Sources
 
 | Skills | Source |
 |--------|--------|
-| 15 existing | `~/.claude/skills/` via migrate-existing.sh |
-| 8+ new | [obra/superpowers](https://github.com/obra/superpowers) via install-superpowers.sh |
+| 14 migrated | `~/.claude/skills/` via migrate-existing.sh |
+| 9 new | [obra/superpowers](https://github.com/obra/superpowers) via install-superpowers.sh |
 | grill-with-docs | [mattpocock/skills](https://github.com/mattpocock/skills) via curl |
