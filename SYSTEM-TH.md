@@ -164,6 +164,32 @@ PERSONAL (explicit only)
 
 ---
 
+## 🔄 Skill Flow — GitHub → Workspace (สำคัญมาก)
+
+```
+                  GitHub
+    github.com/LeGoLus/9arm-skills
+           (source of truth)
+                  │
+                  │ git pull  ← อัปเดตตอนต้องการ
+                  ▼
+          ~/9arm-skills/       ← local clone
+           skills/ (28 skills)
+                  │
+                  │ bash ~/9arm-skills/scripts/link-skills.sh
+                  ▼
+          ~/.claude/skills/    ← runtime (symlinks)
+           [28 skill folders]
+                  │
+                  │ CLAUDE.md reads from here
+                  ▼
+          Claude Code Workspace ← เปิด claude → skills พร้อมใช้ทันที
+```
+
+**กฎ: แก้ skill ที่ GitHub → git pull → link-skills.sh → ทุก workspace อัปเดตพร้อมกัน**
+
+---
+
 ## 🔄 Data Flow — ข้อมูลไหลยังไง?
 
 ```
