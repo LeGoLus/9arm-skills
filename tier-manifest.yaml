@@ -28,10 +28,14 @@ tier_2_ai_agent:                               # +~7,000t
 tier_3_optional:                               # on-demand only
   - engineering/search-first
   - engineering/receiving-code-review
+  - engineering/debug-mantra                   # compact debug (alongside systematic-debugging)
+  - engineering/post-mortem                    # after incidents: cause, fix, prevention
+  - engineering/scrutinize                     # devil's advocate review of plans/PRs
   - productivity/using-git-worktrees
   - productivity/finishing-a-development-branch
   - productivity/improve-codebase-architecture
   - productivity/write-a-prd
+  - productivity/management-talk               # translate dev → stakeholder language
 
 meta:
   - meta/writing-skills

@@ -1,0 +1,257 @@
+{
+  "name": "LeGoLus 9arm-skills",
+  "description": "Personal skill library for Claude Code — Mac Mini M4 Pro",
+  "version": "1.0.0",
+  "author": "LeGoLus",
+  "repository": "https://github.com/LeGoLus/9arm-skills",
+  "skills": [
+    {
+      "name": "systematic-debugging",
+      "category": "engineering",
+      "tier": 0,
+      "description": "4-phase disciplined debugging — reproduce, trace, falsify, verify",
+      "tags": ["debugging", "engineering"],
+      "path": "skills/engineering/systematic-debugging"
+    },
+    {
+      "name": "git-workflow",
+      "category": "productivity",
+      "tier": 0,
+      "description": "Conventional commits, branch naming, PR structure",
+      "tags": ["git", "workflow"],
+      "path": "skills/productivity/git-workflow"
+    },
+    {
+      "name": "grill-me",
+      "category": "productivity",
+      "tier": 0,
+      "description": "Ask clarifying questions before implementing anything",
+      "tags": ["planning", "design"],
+      "path": "skills/productivity/grill-me"
+    },
+    {
+      "name": "grill-with-docs",
+      "category": "productivity",
+      "tier": 0,
+      "description": "grill-me + writes CONTEXT.md and ADRs for established codebases",
+      "tags": ["planning", "documentation", "domain"],
+      "path": "skills/productivity/grill-with-docs"
+    },
+    {
+      "name": "tdd",
+      "category": "engineering",
+      "tier": 1,
+      "description": "RED-GREEN-REFACTOR — failing test before code, always",
+      "tags": ["testing", "engineering"],
+      "path": "skills/engineering/tdd"
+    },
+    {
+      "name": "code-review",
+      "category": "engineering",
+      "tier": 1,
+      "description": "Pre-merge checklist: security, perf, tests, naming",
+      "tags": ["review", "quality"],
+      "path": "skills/engineering/code-review"
+    },
+    {
+      "name": "error-handling",
+      "category": "engineering",
+      "tier": 1,
+      "description": "Explicit error boundaries, structured logging, retry logic",
+      "tags": ["reliability", "production"],
+      "path": "skills/engineering/error-handling"
+    },
+    {
+      "name": "verification-before-completion",
+      "category": "engineering",
+      "tier": 1,
+      "description": "Verify fix actually fixed the issue before marking done",
+      "tags": ["debugging", "quality"],
+      "path": "skills/engineering/verification-before-completion"
+    },
+    {
+      "name": "writing-plans",
+      "category": "productivity",
+      "tier": 1,
+      "description": "Break work into 2-5 minute tasks with exact file paths",
+      "tags": ["planning", "execution"],
+      "path": "skills/productivity/writing-plans"
+    },
+    {
+      "name": "executing-plans",
+      "category": "productivity",
+      "tier": 1,
+      "description": "Batch execution with human checkpoints",
+      "tags": ["execution", "workflow"],
+      "path": "skills/productivity/executing-plans"
+    },
+    {
+      "name": "strategic-compact",
+      "category": "productivity",
+      "tier": 1,
+      "description": "Summarise long sessions to preserve context across compactions",
+      "tags": ["context", "session"],
+      "path": "skills/productivity/strategic-compact"
+    },
+    {
+      "name": "verification-loop",
+      "category": "productivity",
+      "tier": 1,
+      "description": "Build → test → lint → typecheck loop until all green",
+      "tags": ["quality", "ci"],
+      "path": "skills/productivity/verification-loop"
+    },
+    {
+      "name": "subagent-driven-development",
+      "category": "ai-agent",
+      "tier": 2,
+      "description": "Dispatch fresh subagent per task with 2-stage review",
+      "tags": ["agents", "orchestration"],
+      "path": "skills/ai-agent/subagent-driven-development"
+    },
+    {
+      "name": "dispatching-parallel-agents",
+      "category": "ai-agent",
+      "tier": 2,
+      "description": "Run independent tasks concurrently across multiple agents",
+      "tags": ["agents", "parallel", "performance"],
+      "path": "skills/ai-agent/dispatching-parallel-agents"
+    },
+    {
+      "name": "prompt-engineer",
+      "category": "ai-agent",
+      "tier": 2,
+      "description": "Design system prompts, few-shot examples, structured outputs",
+      "tags": ["prompting", "ai"],
+      "path": "skills/ai-agent/prompt-engineer"
+    },
+    {
+      "name": "agentic-eval",
+      "category": "ai-agent",
+      "tier": 2,
+      "description": "Measure LLM output quality, build eval suites, track regression",
+      "tags": ["evaluation", "quality", "ai"],
+      "path": "skills/ai-agent/agentic-eval"
+    },
+    {
+      "name": "continuous-learning",
+      "category": "ai-agent",
+      "tier": 2,
+      "description": "Capture lessons learned and feed back into the system",
+      "tags": ["learning", "improvement"],
+      "path": "skills/personal/continuous-learning"
+    },
+    {
+      "name": "security-review",
+      "category": "engineering",
+      "tier": 2,
+      "description": "Security-focused code review: OWASP, secrets, injection, auth",
+      "tags": ["security", "review"],
+      "path": "skills/engineering/security-review"
+    },
+    {
+      "name": "search-first",
+      "category": "engineering",
+      "tier": 3,
+      "description": "Search existing code before implementing anything new",
+      "tags": ["reuse", "engineering"],
+      "path": "skills/engineering/search-first"
+    },
+    {
+      "name": "receiving-code-review",
+      "category": "engineering",
+      "tier": 3,
+      "description": "How to receive and act on code review feedback constructively",
+      "tags": ["review", "collaboration"],
+      "path": "skills/engineering/receiving-code-review"
+    },
+    {
+      "name": "debug-mantra",
+      "category": "engineering",
+      "tier": 3,
+      "description": "Original 4-step debug discipline (compact version)",
+      "tags": ["debugging"],
+      "path": "skills/engineering/debug-mantra"
+    },
+    {
+      "name": "post-mortem",
+      "category": "engineering",
+      "tier": 3,
+      "description": "Structured incident review: root cause, fix, prevention",
+      "tags": ["incidents", "learning"],
+      "path": "skills/engineering/post-mortem"
+    },
+    {
+      "name": "scrutinize",
+      "category": "engineering",
+      "tier": 3,
+      "description": "Devil's advocate review of plans, PRs, and code changes",
+      "tags": ["review", "critical-thinking"],
+      "path": "skills/engineering/scrutinize"
+    },
+    {
+      "name": "using-git-worktrees",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Run parallel branches via git worktrees without stashing",
+      "tags": ["git", "parallel"],
+      "path": "skills/productivity/using-git-worktrees"
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Checklist for cleanly completing and merging a feature branch",
+      "tags": ["git", "workflow"],
+      "path": "skills/productivity/finishing-a-development-branch"
+    },
+    {
+      "name": "improve-codebase-architecture",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Systematic architecture improvement without breaking changes",
+      "tags": ["architecture", "refactoring"],
+      "path": "skills/productivity/improve-codebase-architecture"
+    },
+    {
+      "name": "write-a-prd",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Product Requirements Document — goals, constraints, success criteria",
+      "tags": ["product", "planning"],
+      "path": "skills/productivity/write-a-prd"
+    },
+    {
+      "name": "management-talk",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Translate dev language to executive/stakeholder language",
+      "tags": ["communication", "stakeholders"],
+      "path": "skills/productivity/management-talk"
+    },
+    {
+      "name": "writing-skills",
+      "category": "meta",
+      "tier": "meta",
+      "description": "Meta-skill for creating and maintaining skill documentation",
+      "tags": ["meta", "documentation"],
+      "path": "skills/meta/writing-skills"
+    },
+    {
+      "name": "document-skill",
+      "category": "personal",
+      "tier": "personal",
+      "description": "Create Thai/English skill documentation with proper frontmatter",
+      "tags": ["thai", "documentation"],
+      "path": "skills/personal/document-skill"
+    },
+    {
+      "name": "andaman-context",
+      "category": "personal",
+      "tier": "personal",
+      "description": "Andaman Print Form business context — printing domain knowledge",
+      "tags": ["andaman", "printing", "business"],
+      "path": "skills/personal/andaman-context"
+    }
+  ]
+}
