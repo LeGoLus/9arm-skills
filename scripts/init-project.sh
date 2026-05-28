@@ -1,42 +1,45 @@
 #!/usr/bin/env bash
-# init-project.sh — scaffold CLAUDE.md for new project
+# init-project.sh — scaffold CLAUDE.md for a new project
+# Skills reference ~/.claude/skills/ (symlinked from ~/9arm-skills, sourced from GitHub)
 # Usage: bash scripts/init-project.sh <project-path> <type>
 # Types: engineering | ai-agent | hermes | planning | full
 
 set -e
 PROJECT_PATH=${1:-.}
 TYPE=${2:-engineering}
-SKILLS_BASE=~/9arm-skills/skills
+SKILLS_BASE=~/.claude/skills   # runtime path — symlinked from ~/9arm-skills
 
 skill_path() {
-  local skill="$1"
-  case "$skill" in
-    systematic-debugging)        echo "engineering/systematic-debugging" ;;
-    git-workflow)                echo "productivity/git-workflow" ;;
-    grill-me)                    echo "productivity/grill-me" ;;
-    grill-with-docs)             echo "productivity/grill-with-docs" ;;
-    tdd)                         echo "engineering/tdd" ;;
-    code-review)                 echo "engineering/code-review" ;;
-    error-handling)              echo "engineering/error-handling" ;;
-    verification-before-completion) echo "engineering/verification-before-completion" ;;
-    writing-plans)               echo "productivity/writing-plans" ;;
-    executing-plans)             echo "productivity/executing-plans" ;;
-    strategic-compact)           echo "productivity/strategic-compact" ;;
-    verification-loop)           echo "productivity/verification-loop" ;;
-    security-review)             echo "engineering/security-review" ;;
-    subagent-driven-development) echo "ai-agent/subagent-driven-development" ;;
-    dispatching-parallel-agents) echo "ai-agent/dispatching-parallel-agents" ;;
-    prompt-engineer)             echo "ai-agent/prompt-engineer" ;;
-    agentic-eval)                echo "ai-agent/agentic-eval" ;;
-    continuous-learning)         echo "ai-agent/continuous-learning" ;;
-    write-a-prd)                 echo "productivity/write-a-prd" ;;
-    improve-arch)                echo "productivity/improve-codebase-architecture" ;;
-    document-skill)              echo "personal/document-skill" ;;
-    *)                           echo "unknown/$skill" ;;
+  case "$1" in
+    systematic-debugging)        echo "systematic-debugging" ;;
+    git-workflow)                echo "git-workflow" ;;
+    grill-me)                    echo "grill-me" ;;
+    grill-with-docs)             echo "grill-with-docs" ;;
+    tdd)                         echo "tdd" ;;
+    code-review)                 echo "code-review" ;;
+    error-handling)              echo "error-handling" ;;
+    verification-before-completion) echo "verification-before-completion" ;;
+    writing-plans)               echo "writing-plans" ;;
+    executing-plans)             echo "executing-plans" ;;
+    strategic-compact)           echo "strategic-compact" ;;
+    verification-loop)           echo "verification-loop" ;;
+    security-review)             echo "security-review" ;;
+    subagent-driven-development) echo "subagent-driven-development" ;;
+    dispatching-parallel-agents) echo "dispatching-parallel-agents" ;;
+    prompt-engineer)             echo "prompt-engineer" ;;
+    agentic-eval)                echo "agentic-eval" ;;
+    continuous-learning)         echo "continuous-learning" ;;
+    post-mortem)                 echo "post-mortem" ;;
+    scrutinize)                  echo "scrutinize" ;;
+    management-talk)             echo "management-talk" ;;
+    write-a-prd)                 echo "write-a-prd" ;;
+    improve-arch)                echo "improve-codebase-architecture" ;;
+    document-skill)              echo "document-skill" ;;
+    *)                           echo "$1" ;;
   esac
 }
 
-ALL_SKILLS="systematic-debugging git-workflow grill-me grill-with-docs tdd code-review error-handling verification-before-completion writing-plans executing-plans strategic-compact verification-loop security-review subagent-driven-development dispatching-parallel-agents prompt-engineer agentic-eval continuous-learning write-a-prd improve-arch document-skill"
+ALL_SKILLS="systematic-debugging git-workflow grill-me grill-with-docs tdd code-review error-handling verification-before-completion writing-plans executing-plans strategic-compact verification-loop security-review subagent-driven-development dispatching-parallel-agents prompt-engineer agentic-eval continuous-learning post-mortem scrutinize management-talk write-a-prd improve-arch document-skill"
 
 case $TYPE in
   engineering)
@@ -56,8 +59,8 @@ case $TYPE in
     BUDGET="~4,500 tokens"
     ;;
   full)
-    ACTIVE="systematic-debugging git-workflow grill-me grill-with-docs tdd code-review error-handling security-review verification-before-completion writing-plans executing-plans prompt-engineer agentic-eval subagent-driven-development dispatching-parallel-agents strategic-compact continuous-learning"
-    BUDGET="~20,000 tokens (use sparingly)"
+    ACTIVE="systematic-debugging git-workflow grill-me grill-with-docs tdd code-review error-handling security-review verification-before-completion writing-plans executing-plans prompt-engineer agentic-eval subagent-driven-development dispatching-parallel-agents strategic-compact continuous-learning post-mortem scrutinize"
+    BUDGET="~22,000 tokens (use sparingly)"
     ;;
   *)
     echo "Unknown type: $TYPE"
@@ -76,45 +79,47 @@ INACTIVE_LIST=""
 for skill in $ALL_SKILLS; do
   if ! echo "$ACTIVE" | grep -qw "$skill"; then
     INACTIVE_LIST="${INACTIVE_LIST}
-- $skill → $SKILLS_BASE/$(skill_path $skill)/SKILL.md"
+# - $skill → $SKILLS_BASE/$(skill_path $skill)/SKILL.md"
   fi
 done
 
-PLANNING_RULE="greenfield → grill-me | existing code → grill-with-docs (updates CONTEXT.md)"
 PROJECT_NAME=$(basename "$PROJECT_PATH")
 
 cat > "$PROJECT_PATH/CLAUDE.md" << EOF
 # $PROJECT_NAME
 > type: $TYPE | created: $(date +%Y-%m-%d) | budget: $BUDGET
+> Skills source: github.com/LeGoLus/9arm-skills (sync: bash ~/9arm-skills/scripts/link-skills.sh)
 
 ## Active Skills
 $SKILL_LIST
 
-## Planning Protocol (auto-select)
-$PLANNING_RULE
+## Planning (auto-select)
+IF src/ exists OR CONTEXT.md exists → grill-with-docs (writes CONTEXT.md + ADRs)
+ELSE → grill-me (clarification only)
 
 ## Debug Protocol
-ALWAYS: systematic-debugging 4 phases — no skipping.
-AFTER FIX: verification-before-completion before marking done.
+ALWAYS: systematic-debugging 4 phases — no skipping
+AFTER FIX: verification-before-completion before marking done
 
-## Development Flow
+## Dev Flow
 1. grill-with-docs / grill-me → shared understanding
 2. writing-plans → 2-5 min tasks with exact file paths
-3. tdd → RED-GREEN-REFACTOR (delete code written before test)
-4. verification-before-completion → verify fix passes
+3. tdd → failing test BEFORE code (delete code written before test)
+4. verification-before-completion → confirm fix
 5. code-review → pre-merge checklist
 6. git-workflow → conventional commit
 
 ## Repo Context
-- Skills:     ~/9arm-skills/
-- Knowledge:  ~/LifeVault/10-Projects/$PROJECT_NAME/
-- Sources:    ~/NotebooksLM/$PROJECT_NAME/
-- Domain:     $PROJECT_NAME/CONTEXT.md  ← created by grill-with-docs
+- Skills:    github.com/LeGoLus/9arm-skills  (local: ~/9arm-skills/)
+- Runtime:   ~/.claude/skills/               (symlinked, always fresh)
+- Knowledge: ~/LifeVault/10-Projects/$PROJECT_NAME/
+- Sources:   ~/NotebooksLM/$PROJECT_NAME/
+- Domain:    CONTEXT.md  ← created by grill-with-docs
 
-## Do NOT Load (token save)
+## On-Demand Skills (not loaded by default)
 $INACTIVE_LIST
 EOF
 
 echo "✅ CLAUDE.md → $PROJECT_PATH/CLAUDE.md"
-echo "📊 Token budget: $BUDGET"
-echo "🎯 Profile: $TYPE"
+echo "📊 Budget: $BUDGET | Profile: $TYPE"
+echo "🔗 Skills from: ~/.claude/skills/ (→ ~/9arm-skills/ → GitHub)"

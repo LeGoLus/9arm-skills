@@ -23,7 +23,7 @@ fi
 
 mkdir -p "$DEST"
 
-find "$REPO/skills" -name SKILL.md \
+find -L "$REPO/skills" -name SKILL.md \
   -not -path '*/node_modules/*' \
   -not -path '*/deprecated/*' \
   -not -path '*/in-progress/*' \
