@@ -8,6 +8,7 @@ tier_0:                                        # ~3,500t total
   - productivity/grill-with-docs               # established project + CONTEXT.md
 
 tier_1_engineering:                            # +~9,500t
+  - engineering/ui-ux-pro-max                  # UI/UX design intelligence ⭐
   - engineering/tdd                            # RED-GREEN-REFACTOR strict
   - engineering/code-review
   - engineering/error-handling
@@ -36,6 +37,7 @@ tier_3_optional:                               # on-demand only
   - productivity/improve-codebase-architecture
   - productivity/write-a-prd
   - productivity/management-talk               # translate dev → stakeholder language
+  - productivity/find                          # cross-category best-price finder (shop/flights/hotels/software)
 
 meta:
   - meta/writing-skills
