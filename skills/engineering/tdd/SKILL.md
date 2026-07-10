@@ -3,7 +3,7 @@ name: tdd
 description: >
   Test-Driven Development skill for all implementation tasks. Use whenever the user
   wants to implement a feature, fix a bug, write code, or build anything. Forces a
-  strict red-green-refactor loop that dramatically improves code quality. Trigger on:
+  strict red-green loop that dramatically improves code quality (refactoring is code-review's job). Trigger on:
   implement, build, code, fix, "write the code", "make it work", any coding task,
   bug fix, feature implementation, "let's build this", "start coding". This should
   be the DEFAULT approach for all implementation work.
@@ -11,7 +11,7 @@ description: >
 
 # TDD — Test-Driven Development
 
-Follow a strict **red-green-refactor** loop for every implementation task.
+Follow a strict **red-green** loop for every implementation task. (Historically "red-green-refactor" — but see the split below: refactoring has moved out of the loop.)
 
 ## Philosophy
 
@@ -21,6 +21,11 @@ Follow a strict **red-green-refactor** loop for every implementation task.
 - Mock at **architectural boundaries**, not at every function call
 - Pure functions are testable by nature — don't extract them just for testing
 - If you can't figure out where to test, the module boundaries are wrong
+
+## Seams — agree where tests go, first
+
+<!-- adapted from mattpocock/skills (MIT) -->
+A **seam** is the public boundary you test at — the interface where you observe behavior without reaching inside. **Test only at pre-agreed seams:** before writing any test, write the seams under test down and confirm them with the user. No test is written at an unconfirmed seam. You can't test everything; agreeing the seams up front is how testing effort lands on the critical paths and complex logic instead of leaking into incidental internals. Ask: "What's the public interface, and which seams should we test?"
 
 ## The Loop
 
@@ -60,23 +65,12 @@ Rules:
 - Hardcoding is fine if only one test checks the value
 - The goal is **speed to green**, not elegance
 
-### Step 4: REFACTOR
-
-```
-Now clean up. Tests are your safety net.
-Run tests after every change — they must stay green.
-```
-
-Look for:
-- **Duplication** between implementation and tests
-- **Deep module opportunities**: combine small files always used together
-- **Unnecessary abstractions**: if a wrapper just forwards calls, inline it
-- **Naming**: does every name communicate intent?
-- **Complexity**: can you simplify without losing capability?
-
-### Step 5: Repeat
+### Step 4: Repeat
 
 Move to the next behavior. Continue until ALL acceptance criteria from the PRD task are met.
+
+> **Where did REFACTOR go?** <!-- adapted from mattpocock/skills (MIT) -->
+> Structural improvement is **not part of the loop** — it belongs to the review stage (see the `code-review` skill). The implementation cycle stays strictly **red → green**: write the failing test, then only enough code to pass it. Keeping refactoring out of the loop stops "while I'm here" cleanup from bundling into feature work and blurring what a given cycle actually changed. Clean-up still happens — just after, as a reviewed, separate pass, not silently mid-cycle.
 
 ## Deep Modules
 
@@ -99,21 +93,14 @@ This makes the codebase dramatically easier for both humans AND agents.
 
 **If you need to mock a lot to test something**, it's a sign the code is too tightly coupled. Fix the coupling, not the tests.
 
-## Refactoring Patterns
-
-During the refactor step, look for:
-
-1. **Extract when duplicated**: Only extract shared code when you see actual duplication, not "potential" reuse
-2. **Inline when trivial**: If a function is called once and adds no clarity, inline it
-3. **Deepen when scattered**: If understanding one concept requires 5 files, merge them
-4. **Simplify when complex**: If a test is hard to write, the interface is too complex
-
 ## Anti-Patterns
 
+<!-- adapted from mattpocock/skills (MIT) -->
 - ❌ Writing tests AFTER implementation (defeats the purpose)
+- ❌ **Tautological test** — the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a hand-derived snapshot, a constant asserted equal to itself). It passes by construction and can never disagree with the code. Expected values must come from an **independent source of truth** — a known-good literal, a worked example, the spec.
 - ❌ Mocking everything (tests become meaningless)
 - ❌ Huge test files with no organization
 - ❌ Tests that test implementation details instead of behavior
-- ❌ Skipping the refactor step (debt accumulates)
+- ❌ Testing through incidental internals instead of a pre-agreed seam
 - ❌ Testing private methods directly
 - ❌ Shared mutable state between tests

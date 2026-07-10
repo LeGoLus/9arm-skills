@@ -52,7 +52,26 @@ You MUST complete each phase before proceeding to the next.
 
 ### Phase 1: Root Cause Investigation
 
-**BEFORE attempting ANY fix:**
+**BEFORE attempting ANY fix — build a tight, red-capable feedback loop FIRST.**
+
+<!-- adapted from mattpocock/skills (MIT) -->
+This is the leading directive of Phase 1. Before you theorize, get a **single command** that drives the actual bug code path and asserts the user's exact symptom — so it goes **red** on this bug and green once fixed — then **run it once and paste the invocation and its output.** With a tight red-capable loop, bisection, hypothesis-testing, and instrumentation all just consume it; without one, staring at code won't save you. Spend disproportionate effort here; be aggressive and creative. If you catch yourself reading code to build a theory before this command exists and runs red, **stop** — jumping to a hypothesis is the exact failure this prevents.
+
+**Ways to construct the loop — try roughly in this order:**
+
+1. **Failing test** at whatever seam reaches the bug (unit / integration / e2e).
+2. **Curl / HTTP script** against a running dev server.
+3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
+4. **Headless browser script** (Playwright / Puppeteer) — drives the UI, asserts on DOM/console/network.
+5. **Replay a captured trace** — save a real request/payload/event log, replay it through the code path in isolation.
+6. **Throwaway harness** — minimal subset of the system (one service, mocked deps) exercising the bug path in one call.
+7. **Property / fuzz loop** — for "sometimes wrong output", run many random inputs to surface the failure mode.
+8. **Bisection harness** — if it appeared between two known states, automate "boot at state X, check, repeat" for `git bisect run`.
+9. **Differential loop** — run the same input through old vs new version (or two configs) and diff outputs.
+
+**Tighten it:** make it faster (skip unrelated init), sharper (assert the specific symptom, not "didn't crash"), and more deterministic (pin time, seed RNG, isolate filesystem). For non-deterministic bugs, raise the reproduction rate until it's debuggable (loop 100×, parallelise, inject sleeps) — a 50%-flake bug is debuggable, 1% is not. If you genuinely cannot build a loop, **say so explicitly**, list what you tried, and ask for environment access or a captured artifact — do not hypothesise without a loop.
+
+Once the loop is red, continue the investigation:
 
 1. **Read Error Messages Carefully**
    - Don't skip past errors or warnings
