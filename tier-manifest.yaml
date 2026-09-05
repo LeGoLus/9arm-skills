@@ -36,8 +36,13 @@ tier_3_optional:                               # on-demand only
   - productivity/finishing-a-development-branch
   - productivity/improve-codebase-architecture
   - productivity/write-a-prd
+  - productivity/dynamic-skill-init             # smart skill selection from a project's own plan doc
   - productivity/management-talk               # translate dev → stakeholder language
   - productivity/find                          # cross-category best-price finder (shop/flights/hotels/software)
+  - engineering/wayfinder                      # multi-session project planning; map lives in WAYFINDER.md/TASK_BRAIN.md (adapted from mattpocock/skills, July 2026; refreshed Sep 2026 for grilling+domain-modeling)
+  - engineering/to-tickets                     # slice a plan/spec into tracer-bullet tickets with blocking edges (adapted from mattpocock/skills, July 2026)
+  - productivity/grilling                      # wayfinder's HITL interview sub-skill (design-tree, frontier rounds) -- vendored from mattpocock/skills, no adaptation needed
+  - engineering/domain-modeling                # wayfinder's HITL CONTEXT.md/ADR sub-skill -- vendored from mattpocock/skills, no adaptation needed
 
 meta:
   - meta/writing-skills

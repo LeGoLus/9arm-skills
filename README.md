@@ -22,6 +22,7 @@ Each skill is its own directory with a `SKILL.md` (YAML frontmatter: `name`, `de
 ```
 9arm-skills/
 ├── upstream/superpowers/          ← git subtree: obra/superpowers
+├── upstream/mattpocock-skills/    ← git subtree: mattpocock/skills (reference; wayfinder itself is hand-adapted, not symlinked from here)
 ├── skills/
 │   ├── engineering/               ← tdd, code-review, debugging, security
 │   ├── productivity/              ← planning, git, writing, execution
@@ -96,6 +97,9 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[search-first](./skills/engineering/search-first/SKILL.md)** — Search before implementing.
 - **[verification-before-completion](./skills/engineering/verification-before-completion/SKILL.md)** — Verify fix works before marking done.
 - **[receiving-code-review](./skills/engineering/receiving-code-review/SKILL.md)** — How to receive and act on code review feedback.
+- **[wayfinder](./skills/engineering/wayfinder/SKILL.md)** — Multi-session project planning: a shared map of decision tickets, resolved one at a time until the route to a named destination is clear. Plans, doesn't do. Adapted for local markdown tracking (`WAYFINDER.md`/`TASK_BRAIN.md`, no issue tracker).
+- **[to-tickets](./skills/engineering/to-tickets/SKILL.md)** — Slice a plan/spec into tracer-bullet tickets with blocking edges.
+- **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** — Build/sharpen a project's domain model: CONTEXT.md, ADRs, glossary. Wayfinder's Grilling sub-skill (paired with `grilling`).
 
 ### Productivity
 
@@ -111,6 +115,7 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[using-git-worktrees](./skills/productivity/using-git-worktrees/SKILL.md)** — Parallel branches via git worktrees.
 - **[finishing-a-development-branch](./skills/productivity/finishing-a-development-branch/SKILL.md)** — Checklist for completing a feature branch.
 - **[management-talk](./skills/productivity/management-talk/SKILL.md)** — Rewrite engineer-to-engineer content for leadership channels.
+- **[grilling](./skills/productivity/grilling/SKILL.md)** — Interview via a design-tree worked in frontier rounds. Wayfinder's Grilling sub-skill (paired with `domain-modeling`); distinct from grill-me/grill-with-docs, which stay this repo's own primary planning skills.
 
 ### AI-Agent
 
@@ -132,3 +137,5 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 | 14 migrated | `~/.claude/skills/` via migrate-existing.sh |
 | 9 new | [obra/superpowers](https://github.com/obra/superpowers) via install-superpowers.sh |
 | grill-with-docs | [mattpocock/skills](https://github.com/mattpocock/skills) via curl |
+| wayfinder, to-tickets | [mattpocock/skills](https://github.com/mattpocock/skills), hand-adapted 2026-07-10 (tracker plumbing stripped; local WAYFINDER.md/TASK_BRAIN.md map, uses this repo's own grill-me/grill-with-docs/prototype/research) |
+| grilling, domain-modeling | [mattpocock/skills](https://github.com/mattpocock/skills), vendored as-is via `git subtree` (no tracker-specific content, no adaptation needed) — wayfinder refreshed 2026-09-05 to call these instead of grill-me/grill-with-docs for its Grilling ticket type |
