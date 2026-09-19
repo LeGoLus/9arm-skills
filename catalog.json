@@ -230,6 +230,14 @@
       "path": "skills/productivity/management-talk"
     },
     {
+      "name": "drive-screen",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Take control of the desktop (focus/type/paste/click/screenshot, drive other agent sessions) — computer-use for forms and GUI apps with no API; last resort after CLI/tmux",
+      "tags": ["computer-use", "desktop", "automation", "forms"],
+      "path": "skills/productivity/drive-screen"
+    },
+    {
       "name": "writing-skills",
       "category": "meta",
       "tier": "meta",
