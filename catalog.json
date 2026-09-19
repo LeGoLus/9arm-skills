@@ -238,6 +238,14 @@
       "path": "skills/productivity/drive-screen"
     },
     {
+      "name": "excalidraw-diagram",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Generate .excalidraw diagrams that argue visually, render to PNG and self-review — for docs, explainers, architectures, workflows",
+      "tags": ["diagram", "visual", "documentation", "excalidraw"],
+      "path": "skills/productivity/excalidraw-diagram"
+    },
+    {
       "name": "writing-skills",
       "category": "meta",
       "tier": "meta",
