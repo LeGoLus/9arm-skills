@@ -107,6 +107,8 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Deep interview for greenfield planning.
 - **[grill-with-docs](./skills/productivity/grill-with-docs/SKILL.md)** — Planning session against existing codebase; updates CONTEXT.md + ADRs.
 - **[write-a-prd](./skills/productivity/write-a-prd/SKILL.md)** — Product Requirements Document creation.
+- **[deck-grill](./skills/productivity/deck-grill/SKILL.md)** — Grills objective/audience/message before any presentation is built; writes the approved slide-by-slide brief.
+- **[sketch-deck](./skills/productivity/sketch-deck/SKILL.md)** — Builds a hand-drawn, step-building HTML deck from an approved deck-grill brief.
 - **[writing-plans](./skills/productivity/writing-plans/SKILL.md)** — Break work into 2-5 minute tasks with exact file paths.
 - **[executing-plans](./skills/productivity/executing-plans/SKILL.md)** — Execute a written plan step by step.
 - **[strategic-compact](./skills/productivity/strategic-compact/SKILL.md)** — Long session summarization and context preservation.

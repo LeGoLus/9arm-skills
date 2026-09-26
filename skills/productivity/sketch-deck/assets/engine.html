@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Itim&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#3b3b3b;overflow:hidden;font-family:Kalam,Itim,'Comic Sans MS',cursive;-webkit-tap-highlight-color:transparent}
+#wrap{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+#stage{position:relative;width:min(calc(100vw - 16px),calc((100vh - 64px)*16/9));aspect-ratio:16/9;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none}
+#slide,#slide svg{width:100%;height:100%;display:block}
+.el{opacity:0;transition:opacity .5s ease}
+.el.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.el{transition:none}}
+#meta{position:absolute;right:2.2%;bottom:2.4%;font-size:clamp(10px,1.3vw,17px);color:#adb5bd;pointer-events:none}
+#board{position:absolute;inset:0;display:none;padding:4% 5% 5%;background:#f1f3f5 radial-gradient(#dee2e6 1.2px,transparent 1.2px) 0 0/18px 18px}
+#board.show{display:block}
+#grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4% 2.4%;height:100%;align-content:center}
+.thumb{position:relative;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.12);aspect-ratio:16/9;cursor:pointer;transition:transform .2s}
+.thumb:hover{transform:scale(1.04)}
+.thumb svg{width:100%;height:100%;display:block;border-radius:8px;transition:filter .6s,opacity .6s}
+.thumb .el{transition:none}
+.thumb.locked svg{filter:blur(4px);opacity:.5}
+.thumb .num{position:absolute;top:-10%;left:-4%;width:clamp(16px,2.3vw,32px);aspect-ratio:1;border-radius:50%;border:2px solid #1e1e1e;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(9px,1.1vw,15px);color:#1e1e1e}
+.thumb.fresh{animation:pop .9s ease}
+@keyframes pop{0%{transform:scale(.92);box-shadow:0 0 0 5px #ffd43b}100%{transform:scale(1);box-shadow:0 2px 10px rgba(0,0,0,.12)}}
+#bmeta{position:absolute;right:2.2%;bottom:2.4%;font-size:clamp(10px,1.3vw,17px);color:#868e96}
+#controls{display:flex;gap:8px;align-items:center}
+#controls button{font-family:inherit;font-size:16px;background:#fff;color:#1e1e1e;border:2px solid #1e1e1e;border-radius:10px;padding:3px 14px;cursor:pointer}
+#controls button:focus-visible{outline:3px solid #74c0fc;outline-offset:2px}
+#hint{color:#adb5bd;font-size:13px;margin-left:6px}
+@media (max-width:700px){#hint{display:none}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage" aria-live="polite">
+    <div id="slide"></div>
+    <div id="meta"></div>
+    <div id="board"><div id="grid"></div><div id="bmeta"></div></div>
+  </div>
+  <div id="controls">
+    <button id="bPrev" aria-label="Previous">◀</button>
+    <button id="bBoard" aria-label="Show board">▦ Board</button>
+    <button id="bNext" aria-label="Next">▶</button>
+    <button id="bFull" aria-label="Fullscreen">⛶</button>
+    <span id="hint">tap / → to advance · ← back · B board · F fullscreen</span>
+  </div>
+</div>
+
+<script>
+/* ---------- sketchy drawing kit ---------- */
+let seed = 1;
+function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+function j(a = 2){ return (rnd() - 0.5) * 2 * a; }
+const INK = '#1e1e1e', GRAY = '#868e96', RED = '#e03131', GREEN = '#2f9e44';
+const C = {
+  orange:{fill:'#ffd8a8',line:'#f08c00'}, green:{fill:'#b2f2bb',line:'#2f9e44'},
+  teal:{fill:'#96f2d7',line:'#0c8599'},   purple:{fill:'#d0bfff',line:'#7048e8'},
+  blue:{fill:'#a5d8ff',line:'#1971c2'},   red:{fill:'#ffc9c9',line:'#e03131'},
+  yellow:{fill:'#ffec99',line:'#f59f00'}, pink:{fill:'#fcc2d7',line:'#c2255c'}
+};
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const HAND = "Kalam,Itim,'Comic Sans MS',cursive", MONO = "'JetBrains Mono',ui-monospace,monospace";
+
+function txt(x, y, s, o = {}){
+  const size = o.size || 30, col = o.color || INK, a = o.anchor || 'start';
+  const lines = String(s).split('\n'), lh = size * 1.22;
+  const y0 = o.base === 'central' ? y - (lines.length - 1) * lh / 2 : y;
+  return `<text x="${x}" y="${y0}" font-size="${size}" fill="${col}" text-anchor="${a}" dominant-baseline="${o.base || 'auto'}" font-family="${o.mono ? MONO : HAND}" font-weight="${o.w || 400}">` +
+    lines.map((l, i) => `<tspan x="${x}" dy="${i ? lh : 0}">${esc(l)}</tspan>`).join('') + `</text>`;
+}
+function sline(x1, y1, x2, y2, c = INK, w = 2.6){
+  let d = '';
+  for (let k = 0; k < 2; k++){
+    const mx = (x1 + x2) / 2 + j(2.5), my = (y1 + y2) / 2 + j(2.5);
+    d += `M${x1 + j(1.5)} ${y1 + j(1.5)} Q${mx} ${my} ${x2 + j(1.5)} ${y2 + j(1.5)} `;
+  }
+  return `<path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+}
+function dashed(x1, y1, x2, y2, c = '#adb5bd'){
+  return `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${c}" stroke-width="2.2" stroke-dasharray="7 7" fill="none"/>`;
+}
+function rrPath(x, y, w, h, r){
+  const J = () => j(1.8);
+  return `M${x + r + J()} ${y + J()} L${x + w - r + J()} ${y + J()} Q${x + w} ${y} ${x + w + J()} ${y + r + J()} L${x + w + J()} ${y + h - r + J()} Q${x + w} ${y + h} ${x + w - r + J()} ${y + h + J()} L${x + r + J()} ${y + h + J()} Q${x} ${y + h} ${x + J()} ${y + h - r + J()} L${x + J()} ${y + r + J()} Q${x} ${y} ${x + r + J()} ${y + J()} Z`;
+}
+function srect(x, y, w, h, fill = '#fff', r = 14, stroke = INK){
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>` +
+    `<path d="${rrPath(x, y, w, h, r)}" fill="none" stroke="${stroke}" stroke-width="2.6" stroke-linejoin="round"/>` +
+    `<path d="${rrPath(x, y, w, h, r)}" fill="none" stroke="${stroke}" stroke-width="1.3" opacity=".55"/>`;
+}
+function rect(x, y, w, h, fill, r = 4){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`; }
+function box(x, y, w, h, label, fill = '#f1f3f5', o = {}){
+  return `<g>${srect(x, y, w, h, fill)}${label ? txt(x + w / 2, y + h / 2 + 2, label, {size:o.fs || 34, anchor:'middle', base:'central', w:o.w || 400, mono:o.mono}) : ''}</g>`;
+}
+const chip = (x, y, w, h, label) => box(x, y, w, h, label, '#fff', {fs:28});
+function arrow(x1, y1, x2, y2, o = {}){
+  const bend = o.bend || 0, c = o.color || INK;
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+  const cx = mx + (-dy / len) * bend + j(2), cy = my + (dx / len) * bend + j(2);
+  const ang = Math.atan2(y2 - cy, x2 - cx), h = 17;
+  const a1 = ang + Math.PI - 0.45, a2 = ang + Math.PI + 0.45;
+  return `<g stroke="${c}" stroke-width="${o.w || 2.6}" fill="none" stroke-linecap="round" stroke-linejoin="round">` +
+    `<path d="M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}" ${o.dash ? 'stroke-dasharray="8 8"' : ''}/>` +
+    `<path d="M${x2 + h * Math.cos(a1)} ${y2 + h * Math.sin(a1)} L${x2} ${y2} L${x2 + h * Math.cos(a2)} ${y2 + h * Math.sin(a2)}"/></g>`;
+}
+function check(x, y, s = 40, c = GREEN){
+  return `<path d="M${x - s * .45} ${y + j(1)} L${x - s * .08} ${y + s * .38} L${x + s * .55} ${y - s * .48}" stroke="${c}" stroke-width="${Math.max(3, s / 7)}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+function cross(x, y, s = 36, c = RED){
+  const h = s / 2;
+  return `<path d="M${x - h} ${y - h} L${x + h} ${y + h} M${x + h} ${y - h} L${x - h} ${y + h}" stroke="${c}" stroke-width="${Math.max(3, s / 7)}" stroke-linecap="round"/>`;
+}
+function doc(x, y, w, h, fill = '#fff', o = {}){
+  const f = Math.min(w, h) * .26;
+  const d = `M${x + j()} ${y + j()} L${x + w - f} ${y + j()} L${x + w + j()} ${y + f} L${x + w + j()} ${y + h + j()} L${x + j()} ${y + h + j()} Z`;
+  let lines = '';
+  if (o.lines){
+    for (let k = 0; k < o.lines; k++){
+      const ly = y + h * .32 + k * (h * .58 / o.lines);
+      const lw = (w * .62) * (.55 + rnd() * .45);
+      const lc = o.lc ? o.lc[k % o.lc.length] : '#495057';
+      lines += sline(x + w * .16, ly, x + w * .16 + lw, ly, lc, 2.2);
+    }
+  }
+  return `<g><path d="${d}" fill="${fill}" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>` +
+    `<path d="M${x + w - f} ${y} L${x + w - f} ${y + f} L${x + w} ${y + f}" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>${lines}</g>`;
+}
+function badge(cx, cy, n, fill, r = 34){
+  return `<g><circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${INK}" stroke-width="2.6"/>` +
+    `<circle cx="${cx + 1.2}" cy="${cy - 1}" r="${r + .8}" fill="none" stroke="${INK}" stroke-width="1.2" opacity=".5"/>` +
+    txt(cx, cy + 3, n, {size:r * 1.05, anchor:'middle', base:'central', w:700}) + `</g>`;
+}
+function heading(n, t, c){
+  const size = 58, tw = t.length * size * .46, x0 = 800 - tw / 2 + 30;
+  return badge(x0 - 62, 108, n, c.fill, 36) + txt(x0, 110, t, {size, base:'central', w:700}) + sline(x0, 150, x0 + tw, 152, c.line, 4);
+}
+function robot(cx, cy, s = 1){
+  return `<g transform="translate(${cx} ${cy}) scale(${s})"><line x1="0" y1="-40" x2="0" y2="-27" stroke="${INK}" stroke-width="2.6"/><circle cx="0" cy="-44" r="6" fill="${RED}"/>` +
+    `<rect x="-37" y="-27" width="74" height="56" rx="13" fill="#a5d8ff" stroke="${INK}" stroke-width="2.6"/><circle cx="-13" cy="-2" r="6.5" fill="${INK}"/><circle cx="13" cy="-2" r="6.5" fill="${INK}"/>` +
+    `<path d="M-8 14 Q0 18 8 14" stroke="${INK}" stroke-width="2.2" fill="none"/></g>`;
+}
+function stick(x, y){
+  return `<g stroke="${INK}" stroke-width="2.8" fill="none" stroke-linecap="round"><circle cx="${x}" cy="${y - 62}" r="22" fill="#fff"/>` +
+    `<path d="M${x} ${y - 40} L${x} ${y + 30} M${x - 34} ${y - 12} L${x} ${y - 22} L${x + 34} ${y - 12} M${x} ${y + 30} L${x - 26} ${y + 84} M${x} ${y + 30} L${x + 26} ${y + 84}"/></g>`;
+}
+function sparkle(cx, cy, r, c = '#f08c00'){
+  return `<path d="M${cx} ${cy - r} Q${cx + r * .15} ${cy - r * .15} ${cx + r} ${cy} Q${cx + r * .15} ${cy + r * .15} ${cx} ${cy + r} Q${cx - r * .15} ${cy + r * .15} ${cx - r} ${cy} Q${cx - r * .15} ${cy - r * .15} ${cx} ${cy - r} Z" fill="${c}" stroke="${INK}" stroke-width="2"/>`;
+}
+function magnifier(cx, cy){
+  return `<g><circle cx="${cx}" cy="${cy}" r="20" fill="#a5d8ff" fill-opacity=".45" stroke="${INK}" stroke-width="2.6"/><line x1="${cx + 14}" y1="${cy + 14}" x2="${cx + 32}" y2="${cy + 32}" stroke="${INK}" stroke-width="4" stroke-linecap="round"/></g>`;
+}
+function zigzag(x, y, w, h){
+  let d = `M${x} ${y + h * .55}`; const n = 5;
+  for (let i = 1; i <= n * 2; i++) d += ` L${x + i * w / (n * 2) + j(3)} ${i % 2 ? y + j(3) : y + h + j(3)}`;
+  return `<path d="${d}" stroke="${RED}" stroke-width="4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
+}
+function win(x, y, w, h, label){
+  return `<g>${srect(x, y, w, h, '#fff', 12)}${sline(x + 4, y + 50, x + w - 4, y + 50, INK, 2)}${txt(x + w / 2, y + 27, label, {size:26, color:GRAY, anchor:'middle', base:'central'})}</g>`;
+}
+function bubble(x, y, w, h, text, fill, o = {}){
+  return `<g><path d="M${x + w - 70} ${y + h - 4} L${x + w - 20} ${y + h + 32} L${x + w - 38} ${y + h - 4} Z" fill="${fill}" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>` +
+    srect(x, y, w, h, fill, 22) + txt(x + w / 2, y + h / 2 + 2, text, {size:o.fs || 32, anchor:'middle', base:'central', mono:o.mono}) + `</g>`;
+}
+function terminal(x, y, w, h, text){
+  return `<g>${rect(x, y, w, h, '#1e1e1e', 12)}${txt(x + 22, y + h / 2 + 2, text, {size:26, color:'#b2f2bb', mono:true, base:'central'})}</g>`;
+}
+function stamp(x, y, label){
+  return `<g transform="rotate(-9 ${x} ${y})">${srect(x, y, 150, 50, '#ebfbee', 8, GREEN)}${txt(x + 75, y + 27, label, {size:28, color:GREEN, anchor:'middle', base:'central', w:700})}</g>`;
+}
+function meter(x, y, w, pct, col, label){
+  return `<g>${rect(x, y, w * pct, 28, col, 6)}${srect(x, y, w, 28, 'none', 8)}${txt(x, y - 12, label, {size:24, color:col === C.green.fill ? GREEN : RED})}</g>`;
+}
+
+/* ---------- slides (injected by build_deck.py) ---------- */
+/*__SLIDES__*/
+const CFG = Object.assign({stepLabel:'slide', boardLabel:'board', revealedLabel:'revealed', board:true}, typeof CONFIG !== 'undefined' ? CONFIG : {});
+const TIPS = SLIDES.length - 1;
+
+/* ---------- rendering ---------- */
+function svgFor(i, step){
+  seed = 1000 + i * 97;
+  const sl = SLIDES[i], els = [];
+  const head = sl.n ? heading(sl.n, sl.t, sl.c) : '';
+  sl.draw((s, svg, e) => els.push({s, e, svg}));
+  const inner = els.map(el => {
+    const on = step >= el.s && (el.e === undefined || step < el.e);
+    return `<g class="el${on ? ' on' : ''}" data-s="${el.s}" data-e="${el.e ?? ''}">${el.svg}</g>`;
+  }).join('');
+  return `<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(sl.t || 'Title')}"><rect width="1600" height="900" fill="#fff"/>${head}${inner}</svg>`;
+}
+function applyStep(step){
+  document.querySelectorAll('#slide .el').forEach(g => {
+    const s = +g.dataset.s, e = g.dataset.e === '' ? Infinity : +g.dataset.e;
+    g.classList.toggle('on', step >= s && step < e);
+  });
+}
+
+const $ = id => document.getElementById(id);
+let idx = 0, step = 0, mode = 'slide', revealed = 0, boardNext = 1, rendered = -1;
+
+function showSlide(){
+  mode = 'slide'; $('board').classList.remove('show');
+  if (rendered !== idx){ $('slide').innerHTML = svgFor(idx, -1); rendered = idx; requestAnimationFrame(() => requestAnimationFrame(() => applyStep(step))); }
+  else applyStep(step);
+  const sl = SLIDES[idx];
+  $('meta').textContent = sl.n ? `${CFG.stepLabel} ${sl.n} · step ${step + 1}/${sl.steps}` : '';
+}
+function buildBoard(){
+  const g = $('grid'); g.innerHTML = '';
+  g.style.gridTemplateColumns = `repeat(${SLIDES.length <= 9 ? 3 : SLIDES.length <= 16 ? 4 : 5},1fr)`;
+  SLIDES.forEach((sl, i) => {
+    const d = document.createElement('div');
+    d.className = 'thumb' + (i > 0 && i > revealed ? ' locked' : '') + (i === revealed && i > 0 ? ' fresh' : '');
+    d.innerHTML = svgFor(i, sl.steps - 1) + (sl.n ? `<div class="num" style="background:${sl.c.fill}">${sl.n}</div>` : '');
+    d.tabIndex = 0;
+    d.onclick = ev => { ev.stopPropagation(); idx = i; step = 0; revealed = Math.max(revealed, i - 1); showSlide(); };
+    g.appendChild(d);
+  });
+}
+function showBoard(){
+  mode = 'board'; buildBoard(); $('board').classList.add('show');
+  $('meta').textContent = '';
+  $('bmeta').textContent = `${CFG.boardLabel} · ${revealed}/${TIPS} ${CFG.revealedLabel}`;
+}
+function next(){
+  if (mode === 'board'){ if (boardNext <= TIPS){ idx = boardNext; step = 0; showSlide(); } return; }
+  const sl = SLIDES[idx];
+  if (step < sl.steps - 1){ step++; showSlide(); return; }
+  if (idx === 0){ idx = 1; step = 0; showSlide(); return; }
+  revealed = Math.max(revealed, idx); boardNext = idx + 1;
+  if (CFG.board) showBoard(); else if (idx < TIPS){ idx++; step = 0; showSlide(); }
+}
+function prev(){
+  if (mode === 'board'){ idx = Math.max(1, boardNext - 1); step = SLIDES[idx].steps - 1; showSlide(); return; }
+  if (step > 0){ step--; showSlide(); return; }
+  if (idx > 0){ idx--; step = SLIDES[idx].steps - 1; showSlide(); }
+}
+function toggleBoard(){
+  if (mode === 'board') showSlide();
+  else { boardNext = idx + (step === SLIDES[idx].steps - 1 ? 1 : 0) || 1; showBoard(); }
+}
+
+$('stage').addEventListener('click', e => {
+  if (mode === 'board') return;
+  const r = $('stage').getBoundingClientRect();
+  (e.clientX - r.left) < r.width * .3 ? prev() : next();
+});
+$('board').addEventListener('click', e => { e.stopPropagation(); next(); });
+$('bNext').onclick = next; $('bPrev').onclick = prev; $('bBoard').onclick = toggleBoard;
+$('bFull').onclick = () => { const s = $('stage'); document.fullscreenElement ? document.exitFullscreen() : (s.requestFullscreen || s.webkitRequestFullscreen || (() => {})).call(s); };
+document.addEventListener('keydown', e => {
+  if (['ArrowRight', ' ', 'Enter', 'PageDown'].includes(e.key)){ e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if (e.key.toLowerCase() === 'b') toggleBoard();
+  else if (e.key.toLowerCase() === 'f') $('bFull').click();
+});
+let tx = null;
+$('stage').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+$('stage').addEventListener('touchend', e => {
+  if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 50){ e.preventDefault(); dx < 0 ? next() : prev(); }
+});
+showSlide();
+</script>
+</body>
+</html>

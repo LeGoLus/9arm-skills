@@ -222,6 +222,22 @@
       "path": "skills/productivity/write-a-prd"
     },
     {
+      "name": "deck-grill",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Grill-me style interview that turns a vague presentation request into an approved, slide-by-slide layout brief before any slides are built",
+      "tags": ["presentation", "planning", "slides"],
+      "path": "skills/productivity/deck-grill"
+    },
+    {
+      "name": "sketch-deck",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Builds a hand-drawn, whiteboard-style, step-building HTML presentation from an approved deck-grill brief",
+      "tags": ["presentation", "slides", "html"],
+      "path": "skills/productivity/sketch-deck"
+    },
+    {
       "name": "management-talk",
       "category": "productivity",
       "tier": 3,

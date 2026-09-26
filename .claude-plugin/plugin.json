@@ -1,7 +1,7 @@
 {
   "name": "9arm-skills",
   "displayName": "LeGoLus 9arm-skills",
-  "description": "Personal skill library for Claude Code — 28 skills across 4 tiers",
+  "description": "Personal skill library for Claude Code \u2014 28 skills across 4 tiers",
   "version": "1.0.0",
   "author": "LeGoLus",
   "repository": "https://github.com/LeGoLus/9arm-skills",
@@ -33,6 +33,8 @@
     "./skills/ai-agent/dispatching-parallel-agents",
     "./skills/ai-agent/prompt-engineer",
     "./skills/ai-agent/agentic-eval",
-    "./skills/meta/writing-skills"
+    "./skills/meta/writing-skills",
+    "./skills/productivity/deck-grill",
+    "./skills/productivity/sketch-deck"
   ]
 }
