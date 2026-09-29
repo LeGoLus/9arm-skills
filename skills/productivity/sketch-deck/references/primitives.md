@@ -21,7 +21,7 @@ const SLIDES = [
 - `steps` = number of build steps. Every `E(s, ...)` must use `s < steps`.
 - `E(start, svgString, end?)`: element is visible when `start <= step < end`. Use `end` to swap captions, replace a low bar with a full one, turn ✗ into ✓, etc.
 - Code order = z-order. Add fills before outlines, and things that should sit on top last.
-- `CONFIG.board: false` turns off the reveal board between slides (use for short or formal decks).
+- `notes: '…'` on a slide = speaker notes (carried into the editor). `CONFIG.board: false` turns off the reveal board between slides (use for short or formal decks).
 
 ## 2. Canvas and zones (1600 × 900)
 
@@ -63,6 +63,7 @@ All return SVG strings. Colours: `INK`, `GRAY`, `RED`, `GREEN`, and palette `C.o
 | `sparkle(cx, cy, r, color)` | 4-point star (AI / magic / highlight). |
 | `magnifier(cx, cy)` | Search / inspect icon. |
 | `zigzag(x, y, w, h)` | Red scribble to cross something out. |
+| `imgslot(x, y, w, h, label)` | Dashed placeholder for a picture added later (editor / `sd fill-slot`). Standard slot: `180,205,1240,640`. |
 | `sline` + `rect` | Combine for charts: a bar = `rect` fill + `srect` outline. |
 
 Emoji inside `txt` work (🧪 📷 📄 ⚠ 🎲) and are a cheap way to add icons.
@@ -86,6 +87,18 @@ Map the brief's "visual concept" to one of these. Each has a proven layout in `e
 | "Truth drifts / one source" | Main doc vs satellite docs with ≠, then zig-zag them out [3] | problem → fix → consequence → exception |
 | "Numbers / KPI" | 2-4 big `txt` numbers (size 80-110) with small labels, or bars with `rect` | one number per step |
 | "Timeline / roadmap" | Horizontal `sline` with `badge` milestones and labels above/below | milestone per step |
+
+### Pitch patterns (from `example-pitch-slides.js`; names are what the brief should use)
+| Message type | Pattern name | Layout | Steps |
+|---|---|---|---|
+| "Before vs after" of a structure | **old-vs-new** | two `srect` panels (red title / green title), 2 `box`es each, red/green one-line verdict, then arrow + ✓ | old → new → arrow+ticks |
+| Ordered phases ending in a gate | **milestone timeline** | `sline` at y=460, `badge` r=55 every 360px from x=260, 2-line label under each (TH 23 / EN 18 gray), callout `box`+arrow above, `stamp` for the gate | one phase per step, stamp last |
+| "This step is the minimum viable point" | **milestone hub** | small box → arrow → big green box (the hub) + `stamp` "MVP" → two optional boxes with arrows | before → hub → optional branches |
+| One base + optional modules | **hub-and-spoke** | hub `box` top-centre, 4 white cards (280×170, emoji + code + name) with arrows | hub → all cards |
+| Show evidence pictures | **image slot** | caption `txt` y=172 (colour per image), `imgslot` 180,205,1240,640; one image per step | frame per step |
+| The ask / decision | **two-box ask** | 2 × (`srect` 560×260 + header `box` 60px tall in phase colour + 2-line bold text) | left → right |
+
+Pitch-minimal rules: title slide = title 84 / subtitle 54 (colour) / underline / gray scope line / mono org name; no takeaway zone (content may use y up to ~850); badge numbers = story order; ≥ 3 steps per content slide, ≤ 5.
 
 When nothing fits, sketch it on paper first: 1 focal object, ≤ 3 supporting objects, 1 takeaway.
 

@@ -176,6 +176,12 @@ function meter(x, y, w, pct, col, label){
   return `<g>${rect(x, y, w * pct, 28, col, 6)}${srect(x, y, w, 28, 'none', 8)}${txt(x, y - 12, label, {size:24, color:col === C.green.fill ? GREEN : RED})}</g>`;
 }
 
+/* image slot: dashed placeholder for a picture to be dropped in later (SketchDeck Studio / `sd fill-slot`) */
+function imgslot(x, y, w, h, label = 'image'){
+  return `<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#f8f9fa" stroke="#adb5bd" stroke-width="3" stroke-dasharray="14 10"/>` +
+    txt(x + w / 2, y + h / 2, '🖼  ' + label + '\n' + w + ' × ' + h, {size:34, color:GRAY, anchor:'middle', base:'central'}) + `</g>`;
+}
+
 /* ---------- slides (injected by build_deck.py) ---------- */
 /*__SLIDES__*/
 const CFG = Object.assign({stepLabel:'slide', boardLabel:'board', revealedLabel:'revealed', board:true}, typeof CONFIG !== 'undefined' ? CONFIG : {});

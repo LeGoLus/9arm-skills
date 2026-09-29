@@ -50,7 +50,10 @@ Pick, don't recite. Skip anything the source material already answers; confirm i
 - Slide count or time limit? Brand colours, logo, template?
 - Will it be shared afterwards (then slides must stand alone)?
 - Deadline?
-- **Good enough:** format + count range + any brand rules.
+- Style: **pitch-minimal** (title + short labels, detail in speaker notes, no bottom takeaway) or **talk** (takeaway line per slide)? Recommend pitch-minimal for executives / decisions.
+- Which slides need real pictures (maps, screenshots, drawings)? Who supplies them (you / ChatGPT / photos)? One image per build step?
+- Will you touch it up in the SketchDeck editor afterwards (drag / rotate / replace images)?
+- **Good enough:** format + style + count range + image list + any brand rules.
 
 ## 8. Success criteria
 - How will you know it worked a week later?

@@ -39,6 +39,8 @@ Propose the arc before any slide detail. Pick the structure that fits the object
 ## Phase 3 — Slide-by-slide layout information
 For each approved headline, write the per-slide block from `references/brief-template.md`: role in the story, objective link, takeaway, visual concept (named pattern), layout zones, build steps, exact on-slide text, speaker notes, evidence, and the audience lens (which concern or objection it addresses).
 
+Before the per-slide blocks, show the **Format preview** (`brief-template.md` §2b): one row per slide (title · pattern · theme · steps · images) + ASCII sketches, so the user approves the *look* up front. List every picture the deck needs in the **Image list** (what it shows, 1240×640, screenshot or a ready-to-paste ChatGPT prompt); images are the only part the user must make by hand.
+
 Then add the **Objective traceability** table: every slide maps to the objective or a sub-message; any slide that maps to nothing gets flagged for cutting.
 
 Save the whole brief as `/mnt/user-data/outputs/deck-brief.md` (markdown, not docx — it will be edited repeatedly) and present it. In chat, show a short summary: the core message, the headline list, and the 2-3 decisions you're least sure about.
@@ -48,7 +50,9 @@ Ask for feedback on the brief. Revise the file with each round (edit, don't rege
 
 ## Phase 5 — Hand-off (only after explicit approval)
 When the user says the brief is good ("โอเค", "ผ่าน", "approved", "go ahead"), confirm the output format and hand off:
-- **Hand-drawn, step-building HTML** → follow the sketch-deck skill using `deck-brief.md` as input.
+- **Hand-drawn, step-building HTML** → follow the sketch-deck skill using `deck-brief.md` as input, then hand off to the editor toolkit (`sd from-slides` → fill image slots → `sd build`) for touch-ups. Paste-ready prompts: `references/prompt-recipe.md`.
+
+**Worked example (reference):** `references/example-grill-QA.md` (the 10 answers that fix a pitch deck's shape) and `references/example-brief-pitch.md` (full pitch-minimal brief with Format preview + Image list, 7 slides). Read them before Phase 1 when the user wants an executive pitch, and use them as the model for what a finished brief looks like.
 - **Editable PowerPoint** → follow the pptx skill, mapping each build step to a slide or animation.
 - Both is fine; build the one they'll present from first.
 

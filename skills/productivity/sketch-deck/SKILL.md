@@ -16,6 +16,10 @@ If there is no brief:
 - For anything client-facing, high-stakes, or longer than ~5 slides, say so and run the deck-grill interview first. A pretty deck with the wrong message is the most expensive failure.
 - If the user explicitly wants to skip it, ask just the three essentials (objective, audience, core message) and write a compact brief yourself before drawing.
 
+### 1b. Pick the style (ask if the brief doesn't say)
+- **talk** (default): teaching / keynote. Bottom takeaway sentence on the last step, ≤ ~25 words per slide.
+- **pitch-minimal**: executive pitch / proposal. Action title + a few short labels only (≤ ~12 words per step), **no bottom takeaway** (the title is the takeaway), detail goes in `notes:`, `board:false`. Working example of every pitch pattern: `references/example-pitch-slides.js` — start from it.
+
 ### 2. Plan each slide on paper before coding
 Read `references/primitives.md` (API, canvas zones, pattern library). For each slide decide:
 - the pattern from the library that best carries the takeaway,
@@ -27,7 +31,9 @@ Look at `references/example-slides.js` for working coordinates of every pattern;
 ### 3. Write slides.js
 - Slide 0 is a title slide (no `n/t/c`). Add section slides the same way if the deck has chapters.
 - Use the palette consistently: give each section or idea family its own colour, and keep RED for problems and GREEN for solutions throughout.
-- Keep on-slide text short; the detail lives in speaker notes (give those to the user in the brief or a separate notes file, not on the slide).
+- Keep on-slide text short; the detail lives in speaker notes: put them in the slide's `notes:` field (`{ n:1, t:'…', c:C.red, steps:4, notes:'…', draw(E){…} }`); they are carried into the editor.
+- Pictures (screenshots, maps, ChatGPT images) are NOT drawn by code: put `imgslot(x, y, w, h, 'label')` where the picture goes (standard full slot `180,205,1240,640`, caption `txt` at y≈172) — one slot per build step. The brief lists what each image must show.
+- For slides meant to be finished in the editor, use only editor-native primitives: `txt box srect sline arrow check badge stamp imgslot` (+ `chip`, `dashed`). Others (`doc win bubble terminal meter robot stick sparkle magnifier zigzag rect`) still build, but convert to approximations in the editor.
 - Match the audience's language. Thai text renders in the Itim hand-drawn font automatically; break long Thai lines with `\n`.
 - Set `CONFIG.stepLabel` to fit the deck ("tip", "step", "ข้อ", "slide"), and `board:false` for decks where a reveal board would feel gimmicky (e.g. executive updates).
 
@@ -36,6 +42,16 @@ Look at `references/example-slides.js` for working coordinates of every pattern;
 python scripts/build_deck.py /home/claude/slides.js /mnt/user-data/outputs/<name>.html --title "<Deck title>"
 ```
 Fix every ERROR and any WARN that is real. Then re-read two or three slides' coordinates against the zone map for overlaps (text crossing arrows, labels running into the gauge, captions under the step label). The validator can't see overlaps; you can.
+
+### 4b. Hand-off to the editor (when the user wants to touch up / add images)
+```bash
+sd -d <deck-dir> from-slides slides.js --title "<Deck title>"   # slides.js → deck folder (warns on approximated primitives)
+sd -d <deck-dir> slots                                          # list empty image slots + ready-to-run fill commands
+sd -d <deck-dir> fill-slot "#6/SLOT · ภาพ 1 · …" pic.png        # drop a finished image into its slot (keeps position/step)
+sd -d <deck-dir> build                                          # → build/SketchDeck_Studio.html: open, drag/rotate/edit, Save
+sd -d <deck-dir> import <saved.html>                            # editor result → deck.json (later edits by CLI)
+```
+`sd` lives in `~/projects/sketchdeck/` (see its README). From then on the deck folder (`deck.json`) is the source of truth, not slides.js — do not rebuild from slides.js after the user has edited in the editor. Tell the user which slides have image slots and their pixel size (aspect 31:16) so they can generate/pick the images.
 
 ### 5. Deliver
 Present the HTML file. In the reply, keep it short: how to navigate (tap right/left or → ←, B board, F fullscreen), any slide where you deviated from the brief and why, and the offer of a .pptx export (static: one slide per build step) via the pptx skill.
