@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!--
+  TASK_BRAIN.html — generated companion view for TASK_BRAIN.md
+  Regenerate this whole file every time TASK_BRAIN.md is updated.
+  Source: ~/9arm-skills/TASK_BRAIN.md
+  Self-contained: no external CSS/JS/fonts — must work as a local double-clicked file.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>9arm-skills — Task Brain</title>
+<style>
+  :root {
+    --done: #1a7f37; --done-bg: #d9f2e3;
+    --progress: #9a6700; --progress-bg: #fff3c4;
+    --review: #b35900; --review-bg: #ffe4c4;
+    --blocked: #c1121f; --blocked-bg: #ffd6d6;
+    --todo: #6e7781; --todo-bg: #eaeef2;
+    --border: #d0d7de; --text: #1f2328; --muted: #6e7781; --bg: #ffffff; --card: #f6f8fa;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--text); background: var(--bg); margin: 0; padding: 24px; max-width: 920px; margin: 0 auto; line-height: 1.5; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+  .goal { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.95rem; }
+  h2 { font-size: 1.05rem; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+
+  /* Timeline */
+  .timeline { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+  .phase { flex: 1; min-width: 140px; border-radius: 8px; padding: 10px 12px; border: 1px solid var(--border); }
+  .phase .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin-bottom: 4px; }
+  .phase .name { font-weight: 600; font-size: 0.9rem; }
+  .phase.done { background: var(--done-bg); border-color: var(--done); }
+  .phase.progress { background: var(--progress-bg); border-color: var(--progress); }
+  .phase.review { background: var(--review-bg); border-color: var(--review); }
+  .phase.blocked { background: var(--blocked-bg); border-color: var(--blocked); }
+  .phase.todo { background: var(--todo-bg); border-color: var(--todo); }
+
+  /* Task list */
+  .task-group { margin-bottom: 16px; }
+  .task-group h3 { font-size: 0.85rem; color: var(--muted); margin: 0 0 6px 0; font-weight: 600; }
+  .task { display: flex; align-items: baseline; gap: 8px; padding: 6px 10px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 2px; }
+  .task .icon { width: 18px; text-align: center; flex-shrink: 0; }
+  .task .owner { font-size: 0.7rem; color: var(--muted); background: var(--card); border-radius: 4px; padding: 1px 6px; margin-left: auto; flex-shrink: 0; }
+  .task.done { color: var(--muted); text-decoration: line-through; }
+  .task.blocked { background: var(--blocked-bg); }
+  .task.review { background: var(--review-bg); }
+
+  /* Summary */
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+  .summary-card h4 { margin: 0 0 6px 0; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .summary-card ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }
+
+  /* Quality gate */
+  .qgate { list-style: none; padding: 0; margin: 0; }
+  .qgate li { padding: 4px 0; font-size: 0.9rem; }
+  .qgate li.pass::before { content: "✅ "; }
+  .qgate li.fail::before { content: "⬜ "; }
+
+  .footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.78rem; }
+</style>
+</head>
+<body>
+
+  <h1>9arm-skills</h1>
+  <div class="meta">Generated 2026-06-22 13:43 from TASK_BRAIN.md · Deadline: — (ongoing maintenance repo)</div>
+  <div class="goal"><strong>Goal:</strong> Maintain the single source-of-truth repo of Claude Code skills (SKILL.md files organized by bucket), with catalog.json + tier-manifest.yaml describing tiers/budgets, and scripts that scaffold per-project CLAUDE.md files and keep ~/.claude/skills/ symlinked to this repo.</div>
+
+  <h2>Timeline</h2>
+  <div class="timeline">
+    <div class="phase done"><div class="label">Phase 1</div><div class="name">dynamic-skill-init Rollout</div></div>
+    <div class="phase review"><div class="label">Phase 2</div><div class="name">LifeVault GitHub Sync</div></div>
+    <div class="phase progress"><div class="label">Phase 3</div><div class="name">SkillManager Integration</div></div>
+    <div class="phase review"><div class="label">Phase 4</div><div class="name">Hermes MCP Tool</div></div>
+    <div class="phase review"><div class="label">Phase 5</div><div class="name">Other Checklist Items</div></div>
+  </div>
+
+  <h2>Tasks</h2>
+  <div class="task-group">
+    <h3>Phase 1 — dynamic-skill-init Rollout (2026-06-22)</h3>
+    <div class="task done"><span class="icon">✅</span> 1.1 Add dynamic-skill-init skill <span class="owner">code</span></div>
+    <div class="task done"><span class="icon">✅</span> 1.2 Register in catalog.json <span class="owner">code</span></div>
+    <div class="task done"><span class="icon">✅</span> 1.3 Register in tier-manifest.yaml <span class="owner">code</span></div>
+    <div class="task done"><span class="icon">✅</span> 1.4 Fix init-project.sh literal-dot PROJECT_NAME bug <span class="owner">code</span></div>
+    <div class="task done"><span class="icon">✅</span> 1.5 Fix init-project.sh stale LifeVault/NotebooksLM template lines <span class="owner">code</span></div>
+    <div class="task done"><span class="icon">✅</span> 1.6 Fix validate.sh stale hardcoded AWOMS path <span class="owner">code</span></div>
+    <div class="task todo"><span class="icon">⬜</span> 1.7 Commit and push today's changes <span class="owner">human</span></div>
+  </div>
+  <div class="task-group">
+    <h3>Phase 2 — LifeVault GitHub Sync</h3>
+    <div class="task review"><span class="icon">❓</span> 2.1 Fix LifeVault empty folders not tracked on GitHub <span class="owner">human</span></div>
+  </div>
+  <div class="task-group">
+    <h3>Phase 3 — SkillManager App Integration</h3>
+    <div class="task todo"><span class="icon">⬜</span> 3.1 Evaluate/install tddworks/SkillsManager macOS app <span class="owner">human</span></div>
+    <div class="task done"><span class="icon">✅</span> 3.2 catalog.json SkillManager-compatible format <span class="owner">code</span></div>
+  </div>
+  <div class="task-group">
+    <h3>Phase 4 — Hermes MCP Tool</h3>
+    <div class="task review"><span class="icon">❓</span> 4.1 Create ~/hermes/tools/claude_code_tool.py <span class="owner">code</span></div>
+    <div class="task review"><span class="icon">❓</span> 4.2 Create ~/hermes/mcp_tools/claude_code_skill.py <span class="owner">code</span></div>
+    <div class="task review"><span class="icon">❓</span> 4.3 Add delegation rule to Hermes Control Room system prompt <span class="owner">human</span></div>
+    <div class="task todo"><span class="icon">⬜</span> 4.4 Test Hermes → claude_code_with_skills → real task <span class="owner">human</span></div>
+  </div>
+  <div class="task-group">
+    <h3>Phase 5 — Other Implementation Checklist Items</h3>
+    <div class="task review"><span class="icon">❓</span> 5.1 Paste Custom Instructions (Mobile + Desktop) <span class="owner">human</span></div>
+    <div class="task review"><span class="icon">❓</span> 5.2 chmod +x scripts/*.sh (verify) <span class="owner">code</span></div>
+    <div class="task review"><span class="icon">❓</span> 5.3 NotebooksLM folder structure scaffold <span class="owner">human</span></div>
+    <div class="task review"><span class="icon">❓</span> 5.4 LifeVault .gitkeep fix + push (duplicate of 2.1) <span class="owner">human</span></div>
+  </div>
+
+  <h2>Summary</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h4>Done so far</h4>
+      <ul>
+        <li>Added dynamic-skill-init skill + catalog/manifest entries</li>
+        <li>Fixed init-project.sh literal-dot PROJECT_NAME bug</li>
+        <li>Fixed init-project.sh stale LifeVault/NotebooksLM template lines</li>
+        <li>Fixed validate.sh stale hardcoded AWOMS path</li>
+        <li>Initialized TASK_BRAIN.md + TASK_BRAIN.html for this repo</li>
+      </ul>
+    </div>
+    <div class="summary-card">
+      <h4>Still pending</h4>
+      <ul>
+        <li>Commit + push today's repo changes (human decision)</li>
+        <li>Review whether Phase 2/4/5 TODOs from MASTER_IMPLEMENTATION.md (dated 2026-05-28) are still relevant</li>
+        <li>Clarify untracked skills/engineering/ui-ux-pro-max/ origin</li>
+      </ul>
+    </div>
+    <div class="summary-card">
+      <h4>Key decisions</h4>
+      <ul>
+        <li>dynamic-skill-init registered at tier 3 (on-demand), not tier 0/1</li>
+        <li>Did not commit/push — explicitly left to human per instruction</li>
+      </ul>
+    </div>
+    <div class="summary-card">
+      <h4>Important context</h4>
+      <ul>
+        <li>This repo is the canonical skill source; ~/.claude/skills/ is a symlinked mirror</li>
+        <li>MASTER_IMPLEMENTATION.md lives outside this repo at ~/.hermes/ and already contains a stale path (~/hermes/ vs actual ~/.hermes/)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Quality Gate</h2>
+  <ul class="qgate">
+    <li class="pass">ไฟล์ output อยู่ใน path ที่กำหนด</li>
+    <li class="pass">Format ตรงกับ PROJECT OVERVIEW</li>
+    <li class="pass">ไม่มี placeholder เช่น [TODO], ...</li>
+    <li class="pass">ข้อมูลครบ ไม่มี section ว่าง</li>
+    <li class="fail">No outstanding [?] items left unreviewed by a human</li>
+    <li class="fail">Today's git changes committed/pushed</li>
+  </ul>
+
+  <div class="footer">
+    Last handoff: code → human, 2026-06-22 13:43 — commit/push decision + several [?] review items pending · Source: TASK_BRAIN.md · This file is regenerated automatically, do not edit by hand.
+  </div>
+
+</body>
+</html>
