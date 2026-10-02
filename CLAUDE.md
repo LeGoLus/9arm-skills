@@ -6,6 +6,11 @@ This repo manages all Claude Code skills. Do not use heavy profiles here.
 
 ## Active Skills (minimal — this is the library itself)
 - ~/9arm-skills/skills/productivity/git-workflow/SKILL.md
+- ~/9arm-skills/skills/engineering/systematic-debugging/SKILL.md  — debugging script/manifest bugs (e.g. today's init-project.sh, validate.sh fixes)
+- ~/9arm-skills/skills/productivity/grill-me/SKILL.md             — clarify scope before adding/restructuring a skill
+- ~/9arm-skills/skills/meta/writing-skills/SKILL.md                — authoring/maintaining SKILL.md files; this is the primary day-to-day skill for this repo
+
+This repo is the skill *source*, not a consumer project — most engineering-tier skills (tdd, code-review, error-handling, etc.) don't apply here since there's no application code, just markdown + small bash scripts. Keep the active list short; load anything else on-demand by reading its SKILL.md path directly.
 
 ## Skill Bucket Rules
 Skills are organized into bucket folders under `skills/`:
@@ -35,3 +40,9 @@ Skills in `personal/`, `in-progress/`, and `deprecated/` must NOT appear in eith
 - `bash ./scripts/token-audit.sh` — audit token costs
 - `bash ./scripts/validate.sh` — verify everything works
 - `bash ./scripts/list-skills.sh` — list all skills with descriptions
+
+## Project State
+- See `TASK_BRAIN.md` (and companion `TASK_BRAIN.html`) for current task list, open TODOs carried over from `~/.hermes/MASTER_IMPLEMENTATION.md`, and pending-review items. Read it before starting work in this repo.
+
+<!-- dynamic-skill-init: source=TASK_BRAIN.md mtime=2026-06-22T06:43:56Z -->
+

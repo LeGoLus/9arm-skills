@@ -83,7 +83,7 @@ for skill in $ALL_SKILLS; do
   fi
 done
 
-PROJECT_NAME=$(basename "$PROJECT_PATH")
+PROJECT_NAME=$(basename "$(cd "$PROJECT_PATH" && pwd)")
 
 cat > "$PROJECT_PATH/CLAUDE.md" << EOF
 # $PROJECT_NAME
@@ -112,8 +112,8 @@ AFTER FIX: verification-before-completion before marking done
 ## Repo Context
 - Skills:    github.com/LeGoLus/9arm-skills  (local: ~/9arm-skills/)
 - Runtime:   ~/.claude/skills/               (symlinked, always fresh)
-- Knowledge: ~/LifeVault/10-Projects/$PROJECT_NAME/
-- Sources:   ~/NotebooksLM/$PROJECT_NAME/
+- Knowledge: ~/LifeVault/10-Projects/$PROJECT_NAME.md  (one file per project — not a folder)
+- Sources:   TASK_BRAIN.md  (session handoff, if this project uses task-brain skill)
 - Domain:    CONTEXT.md  ← created by grill-with-docs
 
 ## On-Demand Skills (not loaded by default)

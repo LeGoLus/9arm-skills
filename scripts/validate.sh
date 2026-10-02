@@ -55,7 +55,7 @@ done
 echo ""
 echo "=== 7. Project CLAUDE.md Files ==="
 check ".hermes/CLAUDE.md"                                    "[ -f ~/.hermes/CLAUDE.md ]"
-check "awoms-app/CLAUDE.md"                                  "[ -f ~/Documents/Andaman/AWOMS/awoms-app/CLAUDE.md ]"
+check "awoms-app/CLAUDE.md"                                  "[ -f ~/projects/awoms-app/awoms-app/CLAUDE.md ]"
 
 echo ""
 echo "=== 8. Smoke Test init-project.sh ==="

@@ -238,6 +238,14 @@
       "path": "skills/productivity/sketch-deck"
     },
     {
+      "name": "dynamic-skill-init",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Tailors a project's CLAUDE.md skill list by reading its own IMPLEMENTATION.md/PRD.md/CONTEXT.md/TASK_BRAIN.md, instead of picking a fixed profile",
+      "tags": ["planning", "skills", "init-project", "tokens"],
+      "path": "skills/productivity/dynamic-skill-init"
+    },
+    {
       "name": "management-talk",
       "category": "productivity",
       "tier": 3,
