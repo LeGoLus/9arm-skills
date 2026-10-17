@@ -90,6 +90,7 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[debug-mantra](./skills/engineering/debug-mantra/SKILL.md)** — Four-mantra debugging discipline (legacy; superseded by systematic-debugging from superpowers).
 - **[post-mortem](./skills/engineering/post-mortem/SKILL.md)** — Write the canonical engineering record of a fixed bug — root cause, mechanism, fix, validation.
 - **[scrutinize](./skills/engineering/scrutinize/SKILL.md)** — Outsider-perspective review of a plan, PR, or code change. Questions intent, traces code path, verifies claims.
+- **[reverse-engineer](./skills/engineering/reverse-engineer/SKILL.md)** — Reverse engineering of binaries, Electron/JS apps, APKs, firmware and browser targets with the REA MCP. Say "reverse engineering" to trigger. Vendored from morluto/rea (MIT).
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — RED-GREEN-REFACTOR. Failing test before any code. Delete code written before test.
 - **[code-review](./skills/engineering/code-review/SKILL.md)** — Pre-merge checklist: security, performance, naming, dead code, test coverage.
 - **[error-handling](./skills/engineering/error-handling/SKILL.md)** — Structured error handling patterns.

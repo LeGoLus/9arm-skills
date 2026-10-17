@@ -17,6 +17,7 @@
     "./skills/engineering/debug-mantra",
     "./skills/engineering/post-mortem",
     "./skills/engineering/scrutinize",
+    "./skills/engineering/reverse-engineer",
     "./skills/productivity/git-workflow",
     "./skills/productivity/grill-me",
     "./skills/productivity/grill-with-docs",

@@ -190,6 +190,14 @@
       "path": "skills/engineering/scrutinize"
     },
     {
+      "name": "reverse-engineer",
+      "category": "engineering",
+      "tier": 3,
+      "description": "Reverse engineer binaries, Electron/JS apps, APKs, firmware and browser targets via the REA MCP (vendored from morluto/rea)",
+      "tags": ["reverse-engineering", "security", "binary-analysis"],
+      "path": "skills/engineering/reverse-engineer"
+    },
+    {
       "name": "using-git-worktrees",
       "category": "productivity",
       "tier": 3,
