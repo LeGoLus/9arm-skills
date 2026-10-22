@@ -119,6 +119,7 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[finishing-a-development-branch](./skills/productivity/finishing-a-development-branch/SKILL.md)** — Checklist for completing a feature branch.
 - **[management-talk](./skills/productivity/management-talk/SKILL.md)** — Rewrite engineer-to-engineer content for leadership channels.
 - **[grilling](./skills/productivity/grilling/SKILL.md)** — Interview via a design-tree worked in frontier rounds. Wayfinder's Grilling sub-skill (paired with `domain-modeling`); distinct from grill-me/grill-with-docs, which stay this repo's own primary planning skills.
+- **[anatomy](./skills/productivity/anatomy/SKILL.md)** — Crafted, interactive isometric SVG figures that explain a technical idea as a real physical machine; WebGL effects and A4 print. Vendored from wheresryan22/anatomy (MIT).
 
 ### AI-Agent
 

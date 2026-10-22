@@ -36,6 +36,7 @@
     "./skills/ai-agent/agentic-eval",
     "./skills/meta/writing-skills",
     "./skills/productivity/deck-grill",
-    "./skills/productivity/sketch-deck"
+    "./skills/productivity/sketch-deck",
+    "./skills/productivity/anatomy"
   ]
 }

@@ -278,6 +278,14 @@
       "path": "skills/productivity/excalidraw-diagram"
     },
     {
+      "name": "anatomy",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Crafted, interactive isometric SVG figures that explain a technical idea as a real physical machine (WebGL, A4 print) — vendored from wheresryan22/anatomy",
+      "tags": ["diagram", "visual", "isometric", "svg", "explainer"],
+      "path": "skills/productivity/anatomy"
+    },
+    {
       "name": "writing-skills",
       "category": "meta",
       "tier": "meta",
