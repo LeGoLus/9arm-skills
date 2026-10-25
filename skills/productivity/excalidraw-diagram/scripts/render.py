@@ -14,6 +14,8 @@ import json
 import sys
 from pathlib import Path
 
+import icons
+
 EXCALIDRAW_VERSION = "0.18.0"
 MODULE_URL = f"https://esm.sh/@excalidraw/excalidraw@{EXCALIDRAW_VERSION}?bundle"
 LOAD_TIMEOUT_MS = 45_000
@@ -21,7 +23,7 @@ EXPORT_TIMEOUT_MS = 20_000
 
 PAGE = """<!doctype html>
 <html><head><meta charset="utf-8">
-<style>html,body{margin:0;background:#fff}#stage svg{display:block}</style></head>
+<style>html,body{margin:0;background:transparent}#stage svg{display:block}</style></head>
 <body><div id="stage"></div>
 <script type="module">
   const scene = %(scene)s;
@@ -43,6 +45,38 @@ PAGE = """<!doctype html>
   }
 </script></body></html>
 """
+
+
+def _segment_hits_box(p, q, box) -> bool:
+    """Liang-Barsky: does segment p-q pass through the rectangle (x0, y0, x1, y1)?"""
+    (x0, y0, x1, y1), (px, py), (dx, dy) = box, p, (q[0] - p[0], q[1] - p[1])
+    lo, hi = 0.0, 1.0
+    for d, near, far in ((dx, x0 - px, x1 - px), (dy, y0 - py, y1 - py)):
+        if d == 0:
+            if near > 0 or far < 0:
+                return False
+            continue
+        a, b = sorted((near / d, far / d))
+        lo, hi = max(lo, a), min(hi, b)
+        if lo > hi:
+            return False
+    return True
+
+
+def lines_over_text(scene: dict, pad: float = 4) -> list[str]:
+    """Arrows/lines that cross a text element they do not own (labels must sit beside the line)."""
+    live = [e for e in scene["elements"] if not e.get("isDeleted")]
+    texts = [e for e in live if e["type"] == "text"]
+    found = []
+    for ln in (e for e in live if e["type"] in ("arrow", "line")):
+        pts = [(ln["x"] + x, ln["y"] + y) for x, y in ln.get("points") or []]
+        for t in texts:
+            if t.get("containerId") == ln["id"]:
+                continue
+            box = (t["x"] - pad, t["y"] - pad, t["x"] + t["width"] + pad, t["y"] + t["height"] + pad)
+            if any(_segment_hits_box(a, b, box) for a, b in zip(pts, pts[1:])):
+                found.append(f"{ln['id']} crosses text {t['id']} ({t.get('text', '')[:24]!r})")
+    return found
 
 
 def load_scene(path: Path) -> dict:
@@ -109,9 +143,15 @@ def main() -> None:
     ap.add_argument("--out", type=Path, help="PNG path (default: next to the source)")
     ap.add_argument("--scale", type=float, default=2.0, help="pixel density (default 2)")
     ap.add_argument("--padding", type=int, default=24, help="canvas padding in px (default 24)")
+    ap.add_argument("--strict", action="store_true", help="exit 1 when a line crosses text")
     args = ap.parse_args()
 
-    scene = load_scene(args.source)
+    scene = icons.apply(load_scene(args.source))
+    overlaps = lines_over_text(scene)
+    for msg in overlaps:
+        print(f"warning: {msg}", file=sys.stderr)
+    if overlaps and args.strict:
+        sys.exit("bad layout: move the line or the text, then render again")
     out = args.out or args.source.with_suffix(".png")
     out.parent.mkdir(parents=True, exist_ok=True)
     render(scene, out, args.scale, args.padding)

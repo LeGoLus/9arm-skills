@@ -54,3 +54,16 @@ fontSize × 1.25 tall. Use `\n` for manual line breaks. Free-floating text is th
 ## Small dot marker
 
 `ellipse`, 12×12, solid fill — use on timelines and as bullet anchors.
+
+## Icon inside a circle
+
+Give the circle a request instead of drawing the icon by hand:
+
+```json
+{ "id": "n_ship", "type": "ellipse", "x": 820, "y": 400, "width": 64, "height": 64,
+  "strokeColor": "#1d4ed8", "backgroundColor": "#dbeafe", "customData": {"icon": "zap"}, "…": "common fields" }
+```
+
+`render.py` draws it automatically; run `uv run python scripts/icons.py file.excalidraw` once before saving so the
+`.excalidraw` opens with icons in excalidraw.com too (adds an `image` element `<id>__icon` + an entry in `files`;
+re-running replaces them). Optional `"iconScale": 0.4` (default 0.5 of the circle).

@@ -8,3 +8,6 @@ written from scratch for the 9arm-skills library, and no upstream text or code i
 (https://github.com/excalidraw/excalidraw, MIT) is loaded at render time from esm.sh.
 
 Tune it to taste: colors in `references/palette.md`, drawing guidance in `references/patterns.md`.
+
+Icons in `assets/icons/` are from **Lucide** (https://lucide.dev, lucide-static v0.460.0), ISC License — copy in
+`assets/icons/LICENSE`. Portions derived from Feather (MIT).

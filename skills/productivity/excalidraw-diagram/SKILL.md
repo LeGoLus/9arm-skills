@@ -21,20 +21,27 @@ Inspired by coleam00/excalidraw-diagram-skill (see `CREDITS.md`); this is an ind
 2. **Ground it.** For a real system, look up actual names, fields, commands and numbers first. Do not invent them.
 3. **Choose the form** from `references/patterns.md` (what the content *does* → what it looks like). Budget ~12 nodes;
    more than that → split into an overview + a zoom.
-4. **Colors** come from `references/palette.md` by role. Do not invent colors.
+4. **Colors** from `references/palette.md` by role. Do not invent colors. Two layouts, same light theme:
+   - **Boxes** (default): dense technical diagrams inside documents.
+   - **Icon style**: a process/story the reader should get at a glance (overview, slide, post): circle nodes with
+     a Lucide icon, label underneath, one container for the core loop, part brackets below. Add
+     `"customData": {"icon": "<name>"}` to a circle and the icon is drawn for you (`scripts/icons.py --list`).
+     See `references/patterns.md` → "Icon nodes" and `examples/icon-flow.*`.
 5. **Write the JSON in sections**, not in one giant response (one zone or one row per edit), with readable ids.
    Format cheat-sheet: `references/format-notes.md`. Hand-write the JSON; no generator scripts.
 6. **Render and look at it** (mandatory, see below). JSON alone cannot tell you it looks right.
 7. **Fix and re-render** until the checklist passes (usually 2–3 rounds).
-8. **Save and embed** (see "In documents").
+8. **Save and embed** (see "In documents"). Icon style: run `uv run python scripts/icons.py <file>` first so the
+   saved `.excalidraw` shows its icons when opened in Excalidraw.
 
 ## Render
 
 ```bash
-cd ~/.claude/skills/excalidraw-diagram/scripts && uv run python render.py <file.excalidraw> [--out x.png] [--scale 2]
+cd ~/.claude/skills/excalidraw-diagram/scripts && uv run python render.py <file.excalidraw> [--out x.png] [--scale 2] [--strict]
 ```
 
-Then open the PNG with the Read tool and inspect it. First time on a machine:
+It warns about every arrow/line that crosses a text box (`--strict` makes that an error; use it). Then open the PNG
+with the Read tool and inspect it. First time on a machine:
 `cd ~/.claude/skills/excalidraw-diagram/scripts && uv sync && uv run playwright install chromium`.
 The renderer needs internet (Excalidraw is loaded from esm.sh, version pinned in `render.py`). It validates references
 first and exits with a clear message on dangling ids, timeouts or renderer errors.
@@ -43,7 +50,8 @@ first and exits with a clear message on dangling ids, timeouts or renderer error
 
 - Does the picture match the one-sentence message? Would the structure still read with the words removed?
 - Text clipped, overflowing, overlapping, or too small to read at document size? (Thai text is wide: size boxes generously.)
-- Arrows land on the intended element, don't cut through other shapes, and every relationship has one.
+- Arrows land on the intended element, don't cut through other shapes **or any text** (`--strict` passes), and every
+  relationship has one.
 - Spacing even; no crowded corner next to an empty one; the most important element is the biggest and most isolated.
 - Colors follow the palette roles; contrast is readable; `opacity` 100 everywhere.
 - Labels are anchored to what they describe; the same term is used for the same thing throughout.
@@ -70,5 +78,7 @@ first and exits with a clear message on dangling ids, timeouts or renderer error
 | `references/patterns.md` | content → visual pattern, depth, composition |
 | `references/palette.md` | roles, colors, text sizes (single source of truth) |
 | `references/format-notes.md` | minimal `.excalidraw` JSON for shapes, labels, arrows |
-| `scripts/render.py` | `.excalidraw` → PNG (headless Chromium) |
-| `examples/` | one worked diagram (source + PNG) |
+| `scripts/render.py` | `.excalidraw` → PNG (headless Chromium); draws requested icons automatically |
+| `scripts/icons.py` | writes icons into the `.excalidraw` (run before saving) · `--list` shows icon names |
+| `assets/icons/` | curated Lucide SVG icons (ISC, see `CREDITS.md`) |
+| `examples/` | box flowchart + icon-style flow (source + PNG) |
