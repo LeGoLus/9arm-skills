@@ -286,6 +286,14 @@
       "path": "skills/productivity/anatomy"
     },
     {
+      "name": "print-upscale",
+      "category": "productivity",
+      "tier": 3,
+      "description": "Upscale a low-res image for large-format print (e.g. 100x140 cm) and deliver HiRes.ai (detail-preserving AI upscale) + Vector.ai (colour trace), with self-check",
+      "tags": ["image", "upscale", "print", "illustrator", "vector"],
+      "path": "skills/productivity/print-upscale"
+    },
+    {
       "name": "writing-skills",
       "category": "meta",
       "tier": "meta",

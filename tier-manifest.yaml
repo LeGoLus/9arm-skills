@@ -44,6 +44,7 @@ tier_3_optional:                               # on-demand only
   - productivity/drive-screen                  # computer-use: drive desktop/forms when no API (needs explicit handover)
   - productivity/excalidraw-diagram            # visual diagrams for docs/explainers
   - productivity/anatomy                       # interactive isometric machine figures (vendored wheresryan22/anatomy, MIT)
+  - productivity/print-upscale                 # low-res image -> HiRes.ai + Vector.ai for large-format print
   - productivity/find                          # cross-category best-price finder (shop/flights/hotels/software)
   - productivity/shared-workspace              # AGENTS.md + .agents/LOG.md + HANDOFF.md: any agent/model continues a folder's work
   - productivity/pstack-bridge                 # pstack plugin under house rules; pstack roles -> tiers.json

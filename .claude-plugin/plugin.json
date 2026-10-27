@@ -39,6 +39,7 @@
     "./skills/productivity/sketch-deck",
     "./skills/productivity/anatomy",
     "./skills/productivity/shared-workspace",
-    "./skills/productivity/pstack-bridge"
+    "./skills/productivity/pstack-bridge",
+    "./skills/productivity/print-upscale"
   ]
 }
