@@ -93,6 +93,14 @@ Deterministic fetching first goes into a plain script (no model), like `hc_runne
 5. **Parallel**: `swarm` for coverage or slices, `arena` for competing designs, `interrogate` for review by two
    model families. Only fan out when the user asked for this mode or the playbook calls for it: every subagent
    costs Claude quota.
+   **Tell the user who is working**, in the chat, every time work leaves this session:
+   ```
+   | agent | model / tier | task | status |
+   |---|---|---|---|
+   | poteto-agent #1 | sonnet high | fix load() in portfolio.py | running |
+   | ladder run | free (MiniMax-M3) | fetch 2 repo stats | done 39.7 s |
+   ```
+   Post it before spawning, update it as each one finishes or fails, and end with what is still running.
 6. **Prove it**: run the real thing, read the real output. Never relay a subagent's "done".
 7. **End**: append `.agents/LOG.md`, rewrite `.agents/HANDOFF.md`, name the principles that changed a decision.
 
