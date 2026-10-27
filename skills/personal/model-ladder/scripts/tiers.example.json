@@ -1,0 +1,50 @@
+{
+  "_about": "Central model tiers for every agent and skill. Skills name a TIER, never a model. Swap a model here (e.g. MiniMax -> Kimi) and every skill follows. No secrets: keys stay in their env file, only the path is here. Live copy: ~/.agents/tiers.json",
+  "order": ["free", "claude-small", "claude-mid", "claude-top"],
+  "tiers": {
+    "free":         {"runner": "claude", "model": "MiniMax-M3", "cost": "flat",
+                     "base_url": "https://api.minimax.io/anthropic",
+                     "key": {"file": "~/.hermes/.env", "name": "MINIMAX_API_KEY"},
+                     "note": "MiniMax subscription 300 THB/month; claude -p pointed at MiniMax's Anthropic-compatible API"},
+    "claude-small": {"runner": "claude", "model": "claude-haiku-5-5", "cost": "claude"},
+    "claude-mid":   {"runner": "claude", "model": "claude-sonnet-5-5", "cost": "claude"},
+    "claude-top":   {"runner": "claude", "model": "claude-opus-5-5", "cost": "claude"}
+  },
+  "spare": {
+    "google":       {"runner": "antigravity-ide", "model": "chosen in Antigravity IDE", "cost": "flat", "handoff": true,
+                     "bin": "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide",
+                     "note": "removed from the order 2026-10-27 (task did not reach the IDE agent unattended); opens the folder in Antigravity IDE and starts an agent chat; waits for out/DONE.json"},
+    "google-desktop": {"runner": "antigravity-desktop", "model": "chosen in Antigravity", "cost": "flat", "handoff": true,
+                       "note": "manual: the prompt is copied to the clipboard, the user pastes it in Antigravity"},
+    "kimi":           {"runner": "claude", "model": "<Kimi model id>", "cost": "flat",
+                       "base_url": "https://api.moonshot.ai/anthropic", "key": {"file": "~/.hermes/.env", "name": "KIMI_API_KEY"},
+                       "note": "example replacement for free: check the model id and URL before use"}
+  },
+  "judge": "claude-top",
+  "spot_check_every": 10,
+  "playwright_mcp": "@playwright/mcp@0.0.83",
+  "pstack": {
+    "_about": "pstack (Cursor plugin) roles -> tiers. Only Claude tiers work here (Agent tool). Apply: python3 ~/9arm-skills/skills/productivity/pstack-bridge/scripts/pstack_models.py",
+    "budget": "medium (high)",
+    "roles": {
+      "feature, refactoring": "claude-mid high",
+      "bug-fix": "claude-mid high",
+      "perf-issue": "claude-mid high",
+      "hillclimb": "claude-mid high",
+      "judgment and prose": "claude-top high",
+      "hardest tasks": "claude-top xhigh",
+      "how explorer": "claude-mid medium",
+      "how explainer": "claude-top high",
+      "why investigators": "claude-mid medium",
+      "why synthesizer": "claude-top high",
+      "reflect tooling": "claude-mid high",
+      "reflect judgment, divergent, synthesizer": "claude-top high",
+      "arena runners": ["claude-top high", "claude-mid high"],
+      "arena cross-judge pool": ["claude-top high", "claude-mid high"],
+      "swarm workers": "claude-mid medium",
+      "architect runners": ["claude-top high", "claude-mid high"],
+      "interrogate reviewers": ["claude-top high", "claude-mid high"]
+    }
+  },
+  "skills": {}
+}

@@ -37,6 +37,8 @@
     "./skills/meta/writing-skills",
     "./skills/productivity/deck-grill",
     "./skills/productivity/sketch-deck",
-    "./skills/productivity/anatomy"
+    "./skills/productivity/anatomy",
+    "./skills/productivity/shared-workspace",
+    "./skills/productivity/pstack-bridge"
   ]
 }

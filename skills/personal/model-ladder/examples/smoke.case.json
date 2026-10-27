@@ -1,0 +1,11 @@
+{
+  "name": "smoke",
+  "goal": "Write the 10th Fibonacci number (F1=1, F2=1) to answer.txt.",
+  "mode": "command",
+  "workdir": "/tmp",
+  "prompt": "Create the file {out}/answer.txt containing only the 10th Fibonacci number (F1=1, F2=1). Use the file write tool; do not run shell commands. Then reply DONE.",
+  "allowed_tools": ["Write"],
+  "timeout_s": 300,
+  "checks": ["grep -qx 55 {out}/answer.txt"],
+  "rubric": "answer.txt holds exactly 55."
+}

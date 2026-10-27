@@ -120,6 +120,8 @@ git -C ~/9arm-skills subtree pull --prefix=upstream/superpowers superpowers main
 - **[management-talk](./skills/productivity/management-talk/SKILL.md)** — Rewrite engineer-to-engineer content for leadership channels.
 - **[grilling](./skills/productivity/grilling/SKILL.md)** — Interview via a design-tree worked in frontier rounds. Wayfinder's Grilling sub-skill (paired with `domain-modeling`); distinct from grill-me/grill-with-docs, which stay this repo's own primary planning skills.
 - **[anatomy](./skills/productivity/anatomy/SKILL.md)** — Crafted, interactive isometric SVG figures that explain a technical idea as a real physical machine; WebGL effects and A4 print. Vendored from wheresryan22/anatomy (MIT).
+- **[shared-workspace](./skills/productivity/shared-workspace/SKILL.md)** — One AGENTS.md + `.agents/LOG.md` + `.agents/HANDOFF.md` per folder so any agent or model (Claude, MiniMax, Antigravity, Gemini) reads the same rules and continues the work.
+- **[pstack-bridge](./skills/productivity/pstack-bridge/SKILL.md)** — Use Cursor's pstack plugin (poteto-mode playbooks, swarm/arena/interrogate) under our rules: precedence table, subagent models generated from `~/.agents/tiers.json`, flow with model-ladder + shared-workspace.
 
 ### AI-Agent
 
