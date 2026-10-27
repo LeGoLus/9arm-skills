@@ -59,3 +59,5 @@ personal:                                      # explicit load only
   - personal/document-skill
   - personal/andaman-context
   - personal/model-ladder                      # tier file ~/.agents/tiers.json; prove + use the cheapest model per skill
+  - personal/finnomena-healthcheck            # Finnomena advisor Health Check reports via the site's own API (route: tiers.json)
+  - personal/finnomena-investment-view        # dated snapshots of Finnomena Investment View model portfolios via its read-only API
