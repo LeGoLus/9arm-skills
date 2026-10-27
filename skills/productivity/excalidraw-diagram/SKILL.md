@@ -40,7 +40,8 @@ Inspired by coleam00/excalidraw-diagram-skill (see `CREDITS.md`); this is an ind
 cd ~/.claude/skills/excalidraw-diagram/scripts && uv run python render.py <file.excalidraw> [--out x.png] [--scale 2] [--strict]
 ```
 
-It warns about every arrow/line that crosses a text box (`--strict` makes that an error; use it). Then open the PNG
+It warns about every arrow/line that crosses a text box and every text that crosses the edge of a box, circle or
+zone (`--strict` makes both an error; always use it). Then open the PNG
 with the Read tool and inspect it. First time on a machine:
 `cd ~/.claude/skills/excalidraw-diagram/scripts && uv sync && uv run playwright install chromium`.
 The renderer needs internet (Excalidraw is loaded from esm.sh, version pinned in `render.py`). It validates references
@@ -50,6 +51,8 @@ first and exits with a clear message on dangling ids, timeouts or renderer error
 
 - Does the picture match the one-sentence message? Would the structure still read with the words removed?
 - Text clipped, overflowing, overlapping, or too small to read at document size? (Thai text is wide: size boxes generously.)
+- **No text sits on a border**: every text is fully inside one box/zone or fully outside it. A label between two zones
+  goes in the gap, so leave a gap wider than the label (`--strict` passes).
 - Arrows land on the intended element, don't cut through other shapes **or any text** (`--strict` passes), and every
   relationship has one.
 - Spacing even; no crowded corner next to an empty one; the most important element is the biggest and most isolated.
@@ -79,6 +82,7 @@ first and exits with a clear message on dangling ids, timeouts or renderer error
 | `references/palette.md` | roles, colors, text sizes (single source of truth) |
 | `references/format-notes.md` | minimal `.excalidraw` JSON for shapes, labels, arrows |
 | `scripts/render.py` | `.excalidraw` → PNG (headless Chromium); draws requested icons automatically |
+| `scripts/test_render.py` | tests for the layout checks (`uv run --with pytest pytest -q test_render.py`) |
 | `scripts/icons.py` | writes icons into the `.excalidraw` (run before saving) · `--list` shows icon names |
 | `assets/icons/` | curated Lucide SVG icons (ISC, see `CREDITS.md`) |
 | `examples/` | box flowchart + icon-style flow (source + PNG) |

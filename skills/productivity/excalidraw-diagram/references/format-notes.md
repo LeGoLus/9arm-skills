@@ -29,6 +29,8 @@ Use short, readable string ids (`api_box`, `arr_api_db`). `scripts/render.py` fa
 Shape lists the text in `boundElements: [{"type":"text","id":"api_box_t"}]`. The text element adds
 `"containerId": "api_box"`, `"text"`, `"originalText"` (same string), `"fontSize": 16`, `"fontFamily": 3`,
 `"textAlign": "center"`, `"verticalAlign": "middle"`, `"lineHeight": 1.25`, and is placed inside the shape's box.
+Free text width: chars × fontSize × 0.62 for fontFamily 8 (count Thai base letters only; vowel/tone marks above
+or below take no width). The layout check uses this box, so keep it close to the real text.
 Size the shape from the text: width ≈ chars × fontSize × 0.6 (Latin) or × 0.7 (Thai) + 40 padding; one line ≈
 fontSize × 1.25 tall. Use `\n` for manual line breaks. Free-floating text is the same element without `containerId`.
 

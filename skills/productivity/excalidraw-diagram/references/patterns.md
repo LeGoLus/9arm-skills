@@ -56,4 +56,10 @@ Makes a flow readable in two seconds: the icon says *what kind of thing*, the la
 - Last node of the success path in green (input/success role `#047857`); arrows into it green too.
 - **Lines never cross text.** Route a feedback arrow over the top of the row (labels sit under the circles), keep
   arrow labels ≥ 8 px off the line, and render with `--strict`: it lists every line that crosses a text box.
+- **Text never sits on a border** (default for every layout, not only icon style). Each text is fully inside one
+  zone/box or fully outside it. Arrow labels between two zones go in the gap: make the gap ≥ label width + 40 px
+  (typically 250–300 px for a two-line Thai label), and keep the label ≥ 8 px off both zone edges. Never shrink the
+  font to make it fit; move the zones apart. `--strict` reports `text … crosses the edge of …`.
+- Give every text its real width (see format-notes "Size the shape from the text"): an oversized text box can
+  trip the check, and an undersized one hides a real overlap.
 - Budget: ≤ 9 icon nodes. More → split into overview + zoom.

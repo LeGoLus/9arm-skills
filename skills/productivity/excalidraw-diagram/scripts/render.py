@@ -79,6 +79,26 @@ def lines_over_text(scene: dict, pad: float = 4) -> list[str]:
     return found
 
 
+def text_over_borders(scene: dict, pad: float = 2) -> list[str]:
+    """Text that straddles the edge of a box, circle or zone (partly inside, partly outside).
+    Text must sit fully inside a shape or fully outside it; labels between two zones go in the gap."""
+    live = [e for e in scene["elements"] if not e.get("isDeleted")]
+    shapes = [e for e in live if e["type"] in ("rectangle", "ellipse", "diamond")]
+    found = []
+    for t in (e for e in live if e["type"] == "text"):
+        tx0, ty0 = t["x"] + pad, t["y"] + pad
+        tx1, ty1 = t["x"] + t["width"] - pad, t["y"] + t["height"] - pad
+        for s in shapes:
+            if t.get("containerId") == s["id"]:
+                continue
+            sx0, sy0, sx1, sy1 = s["x"], s["y"], s["x"] + s["width"], s["y"] + s["height"]
+            overlaps = tx0 < sx1 and tx1 > sx0 and ty0 < sy1 and ty1 > sy0
+            inside = tx0 >= sx0 and tx1 <= sx1 and ty0 >= sy0 and ty1 <= sy1
+            if overlaps and not inside:
+                found.append(f"text {t['id']} ({t.get('text', '')[:24]!r}) crosses the edge of {s['id']}")
+    return found
+
+
 def load_scene(path: Path) -> dict:
     try:
         scene = json.loads(path.read_text(encoding="utf-8"))
@@ -143,15 +163,15 @@ def main() -> None:
     ap.add_argument("--out", type=Path, help="PNG path (default: next to the source)")
     ap.add_argument("--scale", type=float, default=2.0, help="pixel density (default 2)")
     ap.add_argument("--padding", type=int, default=24, help="canvas padding in px (default 24)")
-    ap.add_argument("--strict", action="store_true", help="exit 1 when a line crosses text")
+    ap.add_argument("--strict", action="store_true", help="exit 1 when a line crosses text or text crosses a box edge")
     args = ap.parse_args()
 
     scene = icons.apply(load_scene(args.source))
-    overlaps = lines_over_text(scene)
+    overlaps = lines_over_text(scene) + text_over_borders(scene)
     for msg in overlaps:
         print(f"warning: {msg}", file=sys.stderr)
     if overlaps and args.strict:
-        sys.exit("bad layout: move the line or the text, then render again")
+        sys.exit("bad layout: move the line or the text (or widen the gap between boxes), then render again")
     out = args.out or args.source.with_suffix(".png")
     out.parent.mkdir(parents=True, exist_ok=True)
     render(scene, out, args.scale, args.padding)
